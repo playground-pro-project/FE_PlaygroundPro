@@ -14,7 +14,7 @@ const Layout: FC<Props> = ({ children, chose, id, addClass }) => {
       {chose === "layout" ? (
         <>
           <Navbar />
-          <div className="w-full min-h-screen flex flex-col">
+          <div className="w-full min-h-screen flex flex-col overflow-x-hidden">
             <div className="h-full w-full flex flex-col items-center justify-center">
               {children}
             </div>
