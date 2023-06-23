@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import OtpPage from "./pages/OtpPage";
 import ConfirmPay from "./pages/ConfirmPay";
+import DetailVenue from "./pages/DetailVenue";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/otp" element={<OtpPage />} />
           <Route path="/confirmpay" element={<ConfirmPay />} />
+          <Route path="/detail" element={<DetailVenue />} />
         </Routes>
       </BrowserRouter>
     </>

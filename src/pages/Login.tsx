@@ -4,7 +4,7 @@ import ImgBackground from '../assets/2111.w026.n002.1053B.p1.1053.jpg'
 import Logo from '../assets/logo-black.png'
 import { useNavigate, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
-
+import { Input } from "../components/Input";
 const Login = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
@@ -42,20 +42,23 @@ const Login = () => {
                                 <p className='text-md mt-2'>Please Enter Your Detail to Sign in</p>
                             </div>
                             <div className='relative mt-5'>
-                                <input
+                                <Input
+                                    id="email"
+                                    label="email"
+                                    name="email"
                                     type="text"
-                                    placeholder="Email"
-                                    className="input input-ghost bg-white shadow-md w-full mb-5"
+                                   
                                 />
-
-                                <input
+                                <Input
+                                    id="password"
+                                    label="password"
+                                    name="password"
                                     type={showPassword ? "text" : "password"}
-                                    placeholder="Password"
-                                    className="input input-ghost bg-white shadow-md w-full"
+                                    
                                 />
                                 <a
                                     type="button"
-                                    className="absolute right-4 mt-4 text-gray-800 text-xl"
+                                    className="absolute bottom-6 right-4 mt-4 text-gray-800 text-xl"
                                     onClick={togglePasswordVisibility}
                                 >
                                     {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -64,6 +67,7 @@ const Login = () => {
                             <div className='flex justify-between items-center w-full p-3'>
                                 <div className="form-control">
                                     <label className="label cursor-pointer">
+
                                         <input
                                             type="checkbox"
                                             className="checkbox checkbox-primary"
@@ -74,8 +78,8 @@ const Login = () => {
                                 <Link to="/forgot" className='font-bold'>Forgot Acount ?</Link>
 
                             </div>
-                            <div className='hover:cursor-pointer mt-10 w-full h-12 rounded-xl bg-gradient-to-r from-[#73A9E9] to-[#854A7A] flex justify-center items-center transition-colors duration-300 hover:bg-gradient-to-r hover:from-[#854A7A] hover:to-[#73A9E9]'
-                            onClick={HandleLogin}
+                            <div className='hover:cursor-pointer mt-5 w-full h-12 rounded-xl bg-gradient-to-r from-[#73A9E9] to-[#854A7A] flex justify-center items-center transition-colors duration-300 hover:bg-gradient-to-r hover:from-[#854A7A] hover:to-[#73A9E9]'
+                                onClick={HandleLogin}
                             >
                                 <p className='text-xl font-bold text-white'>Login</p>
                             </div>

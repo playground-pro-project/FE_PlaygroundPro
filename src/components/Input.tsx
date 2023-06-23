@@ -9,6 +9,7 @@ interface InputProps {
   error?: string | boolean | undefined;
   touch?: string | boolean | undefined;
   disabled?: boolean | undefined;
+ 
 }
 
 interface InputTextProps extends InputProps {
@@ -37,6 +38,7 @@ export const Input: FC<InputTextProps> = ({
   onBlur,
   touch,
   disabled,
+
 }) => {
   return (
     <div className="h-16 w-full">
