@@ -56,8 +56,7 @@ const LandingPage = () => {
                 </div>
                 <div className='w-screen min-h-screen'>
                     <div className='w-full flex justify-center items-center'>
-                        <p className='text-3xl font-bold pr-4 mt-5'>Best Over</p>
-
+                        <p className='text-3xl font-bold px-4 mt-5'>Best Over</p>
                     </div>
                     <div className='p-10 flex gap-5 justify-center flex-wrap'>
                         <CardVenue
