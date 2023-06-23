@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import ImgBackground from '../assets/2111.w026.n002.1053B.p1.1053.jpg'
 import Logo from '../assets/logo-black.png'
 import Swal from 'sweetalert2';
+import { Input } from '../components/Input';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -40,42 +41,44 @@ const Register = () => {
                                 <p className='text-md mt-2'>Please Enter Your Detail to Sign up</p>
                             </div>
                             <div className='relative mt-5'>
-                                <input
-                                    type="text"
-                                    placeholder="name"
-                                    className="input input-ghost bg-white shadow-md w-full mb-5"
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="phone"
-                                    className="input input-ghost bg-white shadow-md w-full mb-5"
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="email"
-                                    className="input input-ghost bg-white shadow-md w-full mb-5"
+                                <Input
+                                id='name'
+                                type='text'
+                                label='Name'
+                               
                                 />
 
-                                <input
-                                    type={showPassword ? "text" : "password"}
-                                    placeholder="Password"
-                                    className="input input-ghost bg-white shadow-md w-full mb-5"
+                                <Input
+                                id='phone'
+                                type='text'
+                                label='Phone'
+                               
                                 />
+
+                                <Input
+                                id='email'
+                                type='email'
+                                label='Email'
+                                
+                                />
+
+                                <Input
+                                id='password'
+                                type={showPassword ? "text" : "password"}
+                                label='Password'
+                               
+                                />
+
+                                <Input
+                                id='password'
+                                type={showPassword ? "text" : "password"}
+                                label='Confirm Passsword'
+                               
+                                />
+                               
                                 <a
                                     type="button"
-                                    className="absolute right-4 mt-4 text-gray-800 text-xl"
-                                    onClick={togglePasswordVisibility}
-                                >
-                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                                </a>
-                                <input
-                                    type={showPassword ? "text" : "password"}
-                                    placeholder="Confirm Password"
-                                    className="input input-ghost bg-white shadow-md w-full"
-                                />
-                                <a
-                                    type="button"
-                                    className="absolute right-4 mt-4 text-gray-800 text-xl"
+                                    className="absolute bottom-6 right-4 mt-4 text-gray-800 text-xl"
                                     onClick={togglePasswordVisibility}
                                 >
                                     {showPassword ? <FaEyeSlash /> : <FaEye />}
