@@ -3,6 +3,7 @@ import Layout from '../components/Layout'
 import { Carousel } from '../components/Carousel'
 import { BsFillGeoAltFill, BsFillStarFill } from "react-icons/bs";
 import { Acordion } from '../components/Acordion';
+import { Maps } from '../components/Maps';
 
 const DetailVenue = () => {
     const images: string[] = [
@@ -10,6 +11,9 @@ const DetailVenue = () => {
         'https://www.jasapembuatanlapangan.id/wp-content/uploads/2022/02/rencana-anggaran-biaya-pembuatan-lapangan-basket-fitur-image.png',
         'https://blogger.googleusercontent.com/img/a/AVvXsEi9wOvkZra-yskxVfU0zlmFAZLqDcBkL340OTepI0v0tfAh8OWzN1AgRfU1F9VzhzQYms5N17SQaLIliv4KkZLjUjejIoQZmpv9f6rIqqj-3JBD03ifthcaXw8xlWH5GBBXd9yS0Npqql_cB0zhWPwME3F-WjcYu-NsBs77T4ILNsu2nKfg-GsOpGhC=w497-h373'
     ];
+
+    const latitude = -7.3804308; // Contoh nilai latitude
+    const longitude = 109.3664238; // Contoh nilai longitude
 
     return (
         <>
@@ -23,8 +27,8 @@ const DetailVenue = () => {
                         image={images}
                     />
                     <div className='w-full grid grid-cols-2 mb-10'>
-                        <div className=''>
-                            ini map
+                        <div className='mr-4'>
+                            <Maps latitude={latitude} longitude={longitude}/>
 
                         </div>
                         <div className='mt-3 pl-5'>
@@ -82,36 +86,36 @@ const DetailVenue = () => {
                     <div className='m-5'>
                         <div className='w-full'>
                             <Acordion
-                            name='contoh'
-                            content='ini hanya contoh'
-                            rating={3}
+                                name='contoh'
+                                content='ini hanya contoh'
+                                rating={3}
                             />
                             <Acordion
-                            name='contoh'
-                            content='ini hanya contoh'
-                            image='https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg'
-                            rating={5}
+                                name='contoh'
+                                content='ini hanya contoh'
+                                image='https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg'
+                                rating={5}
                             />
                             <Acordion
-                            name='contoh'
-                            content='ini hanya contoh'
-                            rating={4}
+                                name='contoh'
+                                content='ini hanya contoh'
+                                rating={4}
                             />
                             <Acordion
-                            name='contoh'
-                            content='ini hanya contoh'
-                            image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjRzkEEVtiPqqpsIeWxJzt-6pieZh0gl5wWncL3yQA1XDIZKWtEcYwAvp5qwbMnDWOAQI&usqp=CAU'
-                            rating={1}
+                                name='contoh'
+                                content='ini hanya contoh'
+                                image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjRzkEEVtiPqqpsIeWxJzt-6pieZh0gl5wWncL3yQA1XDIZKWtEcYwAvp5qwbMnDWOAQI&usqp=CAU'
+                                rating={1}
                             />
                             <Acordion
-                            name='contoh'
-                            content='ini hanya contoh'
-                            rating={5}
+                                name='contoh'
+                                content='ini hanya contoh'
+                                rating={5}
                             />
-                            
+
 
                         </div>
-                        
+
 
 
                     </div>
