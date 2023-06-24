@@ -8,7 +8,7 @@ export const Navbar = () => {
   const [Login, setLogin] = useState(false);
 
   useEffect(() => {
-    setLogin(true)
+    setLogin(!Login)
   }, []);
 
   const handleLogin = () => {
