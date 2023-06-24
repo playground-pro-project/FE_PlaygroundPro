@@ -6,6 +6,7 @@ import OtpPage from "./pages/OtpPage";
 import ConfirmPay from "./pages/ConfirmPay";
 import DetailVenue from "./pages/DetailVenue";
 import MyVenue from "./pages/MyVenue";
+import AddVenue from "./pages/AddVenue";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/confirmpay" element={<ConfirmPay />} />
           <Route path="/detail" element={<DetailVenue />} />
           <Route path="/myvenue" element={<MyVenue />} />
+          <Route path="/addvenue" element={<AddVenue/>} />
         </Routes>
       </BrowserRouter>
     </>

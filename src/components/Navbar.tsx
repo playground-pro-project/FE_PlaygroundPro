@@ -22,13 +22,13 @@ export const Navbar = () => {
         <img src={Logo} alt="Logo" className='w-32' />
       </div>
       <div className="flex-none">
-        <div className='flex items-center gap-2 mr-5 text-white font-semibold'>
+        <div className='flex items-center gap-2 mr-5 font-semibold text-white'>
           <BsFillGeoAltFill />
           <p>Jakarta</p>
         </div>
         {Login ?
 
-          <button className='btn btn-warning mr-4' onClick={handleLogin}>
+          <button className='mr-4 btn btn-warning' onClick={handleLogin}>
             Login
           </button>
           :
@@ -48,7 +48,7 @@ export const Navbar = () => {
               <li><a>Become Owner
                 <span className="badge badge-secondary">New</span>
               </a></li>
-              <li className='text-red-500 font-bold'><a>Logout</a></li>
+              <li className='font-bold text-red-500'><a>Logout</a></li>
             </ul>
           </div>
         }
