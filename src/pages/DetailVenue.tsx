@@ -6,12 +6,13 @@ import {
     BsFillStarFill,
     BsFillTrash3Fill,
     BsFillPlusCircleFill,
-    BsFillPencilFill
+    BsFillPencilFill,
+    BsFillCloudArrowUpFill
 } from "react-icons/bs";
 import { Acordion } from '../components/Acordion';
 import { Maps } from '../components/Maps';
-import EditVenue from './EditVenue';
-import AddImage from './AddImage';
+import { Modals } from '../components/Modal';
+import { Input } from '../components/Input';
 
 const DetailVenue = () => {
 
@@ -22,9 +23,7 @@ const DetailVenue = () => {
     ];
 
     const [user, setUser] = useState<string>("")
-    const [popAdd, setPopAdd] = useState<boolean>(false)
-    const [popImage, setPopImage] = useState<boolean>(false)
-
+ 
     useEffect(() => {
         setUser("owner")
     }, []);
@@ -32,154 +31,209 @@ const DetailVenue = () => {
     const latitude = -7.3804308; // Contoh nilai latitude
     const longitude = 109.3664238; // Contoh nilai longitude
 
-
-    const HandlePopUp = () => {
-        setPopAdd(!popAdd)
-    }
-    const HandlePopUpImage = () => {
-        setPopImage(!popImage)
-    }
-
     return (
         <>
-            <div className={`${popAdd || popImage ? "fixed" : ""}`}>
-
-                <Layout
-                    chose='layout'
-                >
-                    <Layout
-                        chose='container'>
-                        <Carousel
-                            id='1'
-                            image={images}
+            <Layout
+                chose='layout'
+            >
+                <Modals id='modal-edit-venue'>
+                    <div className='flex justify-center mb-5 text-xl font-bold text-darkBlue'>
+                        Edit Venue
+                    </div>
+                    <div className='w-full'>
+                        <Input
+                            id="name"
+                            label="Venue Name"
+                            name="name"
+                            type="text"
                         />
-                        <div className='grid w-full grid-cols-2 mb-10'>
-                            <div className='mr-4'>
-                                <Maps latitude={latitude} longitude={longitude} />
+                        <Input
+                            id="location"
+                            label="Location"
+                            name="location"
+                            type="text"
+                        />
+                        <Input
+                            id="price"
+                            label="Hourly Price"
+                            name="price"
+                            type="text"
+                        />
+
+                    </div>
+                    <div className="flex justify-end w-full gap-3">
+                        <div className="mt-0 modal-action ">
+                            <label htmlFor="modal-edit-venue" className="btn btn-ghost">
+                                Close
+                            </label>
+                        </div>
+                        <button className="w-32 text-white btn btn-primary">
+                            Submit
+                        </button>
+                    </div>
+
+                </Modals>
+
+                <Modals id='modal-add-image'>
+                    <div className='w-full'>
+                        <div className='flex justify-center mb-5 text-xl font-bold text-darkBlue'>
+                            Add Image
+                        </div>
+                        <div className='w-full'>
+                            <div className='flex flex-col items-center justify-center w-full border-2 border-gray-800 border-dashed rounded-xl h-52 bg-base-100'>
+                                <div className="text-center">
+                                    <div className='flex justify-center'>
+                                        <BsFillCloudArrowUpFill class='text-5xl' />
+                                    </div>
+                                    <span className='text-sm'>Drag and drop or browse to choose a file </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='flex justify-end w-full gap-2 mt-10'>
+                            <div className="mt-0 modal-action ">
+                                <label htmlFor="modal-add-image" className="btn btn-ghost">
+                                    Close
+                                </label>
+                            </div>
+                            <button className="w-32 text-white btn btn-primary">
+                                Submit
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </Modals>
+                \
+                <Layout
+                    chose='container'>
+                    <Carousel
+                        id='1'
+                        image={images}
+                    />
+                    <div className='grid w-full grid-cols-2 mb-10'>
+                        <div className='mr-4'>
+                            <Maps latitude={latitude} longitude={longitude} />
+
+                        </div>
+                        <div className='pl-5 mt-3'>
+                            <div className='flex w-full '>
+                                <div className='w-4/5 text-4xl font-bold'>
+                                    lapangan setia budi
+                                </div>
+                                <div className='flex items-center justify-end w-1/5 gap-2 pr-5 text-xl font-bold text-yellow'>
+                                    <span className='text-black'>4,5</span>  <BsFillStarFill />
+                                </div>
+                            </div>
+                            <div className='flex items-center gap-3 mt-5 text-xl font-semibold text-gray-500'>
+                                <BsFillGeoAltFill />Senayan Jakarta <span className='text-white badge bg-oren'>10 Km </span>
+                            </div>
+                            <div className='mt-5 text-4xl font-bold text-oren'>
+                                Rp.120.000 / malam
+                            </div>
+
+                            <div className='w-full pr-5 mt-5'>
+                                <p className='mr-5'>
+                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                </p>
 
                             </div>
-                            <div className='pl-5 mt-3'>
-                                <div className='flex w-full '>
-                                    <div className='w-4/5 text-4xl font-bold'>
-                                        lapangan setia budi
-                                    </div>
-                                    <div className='flex items-center justify-end w-1/5 gap-2 pr-5 text-xl font-bold text-yellow'>
-                                        <span className='text-black'>4,5</span>  <BsFillStarFill />
-                                    </div>
-                                </div>
-                                <div className='flex items-center gap-3 mt-5 text-xl font-semibold text-gray-500'>
-                                    <BsFillGeoAltFill />Senayan Jakarta <span className='text-white badge bg-oren'>10 Km </span>
-                                </div>
-                                <div className='mt-5 text-4xl font-bold text-oren'>
-                                    Rp.120.000 / malam
-                                </div>
 
-                                <div className='w-full pr-5 mt-5'>
-                                    <p className='mr-5'>
-                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                    </p>
-
+                            {user === "default" ?
+                                <div className='w-full p-2 mt-10'>
+                                    <button className='w-full h-12 font-semibold text-white bg-primary rounded-xl'>
+                                        Check Availability
+                                    </button>
                                 </div>
-
-                                {user === "default" ?
-                                    <div className='w-full p-2 mt-10'>
-                                        <button className='w-full h-12 font-semibold text-white bg-primary rounded-xl'>
-                                            Check Availability
-                                        </button>
-                                    </div>
-                                    :
-                                    <div className='flex justify-start w-full gap-2 p-5 mt-5'>
-                                        <button className='flex items-center justify-center h-12 gap-3 font-semibold text-white hover:text-black btn bg-yellow rounded-xl'
-                                        onClick={HandlePopUp}
-                                        >
+                                :
+                                <div className='flex justify-start w-full gap-2 p-5 mt-5'>
+                                    <div className="mt-0 modal-action ">
+                                        <label htmlFor="modal-edit-venue" className="flex items-center justify-center h-12 gap-3 font-semibold text-white btn btn-ghost hover:text-black bg-warning rounded-xl">
                                             Edit
                                             <BsFillPencilFill />
-                                        </button>
-                                        <button className='flex items-center justify-center h-12 gap-3 font-semibold text-white hover:text-black btn bg-primary rounded-xl'
-                                           onClick={HandlePopUpImage}
-                                        >
+                                        </label>
+                                        <label htmlFor="modal-add-image" className="flex items-center justify-center h-12 gap-3 font-semibold text-white btn btn-ghost hover:text-black bg-primary rounded-xl">
                                             Add Image
                                             <BsFillPlusCircleFill />
-                                        </button>
-                                        <button className='flex items-center justify-center h-12 gap-3 font-semibold text-white bg-red-500 hover:text-black btn rounded-xl'>
+                                        </label>
+                                        <label htmlFor="modal-delete-venue" className="flex items-center justify-center h-12 gap-3 font-semibold text-white bg-red-500 btn btn-ghost hover:text-black rounded-xl">
                                             Delete
                                             <BsFillTrash3Fill />
-                                        </button>
+                                        </label>
                                     </div>
-                                }
-                            </div>
 
+                                </div>
+                            }
                         </div>
 
+                    </div>
 
-                        <div className={`${user === "default" ? "" : "hidden"}`}>
 
-                            <div className={`m-5`}>
-                                <span className='text-3xl font-bold'>Review & Ratings</span>
-                                <div className='flex items-center gap-4'>
-                                    <div className='text-5xl font-bold'>
-                                        4,5
-                                    </div>
-                                    <div className='mt-3'>
-                                        <div className='flex gap-2 text-2xl text-yellow'>
-                                            <BsFillStarFill />
-                                            <BsFillStarFill />
-                                            <BsFillStarFill />
-                                            <BsFillStarFill />
-                                            <BsFillStarFill />
-                                        </div>
-                                        <span className='text-xl font-semibold'>Based on Review</span>
-                                    </div>
+                    <div className={`${user === "default" ? "" : "hidden"}`}>
+
+                        <div className={`m-5`}>
+                            <span className='text-3xl font-bold'>Review & Ratings</span>
+                            <div className='flex items-center gap-4'>
+                                <div className='text-5xl font-bold'>
+                                    4,5
                                 </div>
-                            </div>
-
-                            <div className='m-5'>
-                                <div className='w-full'>
-                                    <Acordion
-                                        name='contoh'
-                                        content='ini hanya contoh'
-                                        rating={3}
-                                    />
-                                    <Acordion
-                                        name='contoh'
-                                        content='ini hanya contoh'
-                                        image='https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg'
-                                        rating={5}
-                                    />
-                                    <Acordion
-                                        name='contoh'
-                                        content='ini hanya contoh'
-                                        rating={4}
-                                    />
-                                    <Acordion
-                                        name='contoh'
-                                        content='ini hanya contoh'
-                                        image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjRzkEEVtiPqqpsIeWxJzt-6pieZh0gl5wWncL3yQA1XDIZKWtEcYwAvp5qwbMnDWOAQI&usqp=CAU'
-                                        rating={1}
-                                    />
-                                    <Acordion
-                                        name='contoh'
-                                        content='ini hanya contoh'
-                                        rating={5}
-                                    />
-
-
+                                <div className='mt-3'>
+                                    <div className='flex gap-2 text-2xl text-yellow'>
+                                        <BsFillStarFill />
+                                        <BsFillStarFill />
+                                        <BsFillStarFill />
+                                        <BsFillStarFill />
+                                        <BsFillStarFill />
+                                    </div>
+                                    <span className='text-xl font-semibold'>Based on Review</span>
                                 </div>
-
-
-
                             </div>
                         </div>
 
+                        <div className='m-5'>
+                            <div className='w-full'>
+                                <Acordion
+                                    name='contoh'
+                                    content='ini hanya contoh'
+                                    rating={3}
+                                />
+                                <Acordion
+                                    name='contoh'
+                                    content='ini hanya contoh'
+                                    image='https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg'
+                                    rating={5}
+                                />
+                                <Acordion
+                                    name='contoh'
+                                    content='ini hanya contoh'
+                                    rating={4}
+                                />
+                                <Acordion
+                                    name='contoh'
+                                    content='ini hanya contoh'
+                                    image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjRzkEEVtiPqqpsIeWxJzt-6pieZh0gl5wWncL3yQA1XDIZKWtEcYwAvp5qwbMnDWOAQI&usqp=CAU'
+                                    rating={1}
+                                />
+                                <Acordion
+                                    name='contoh'
+                                    content='ini hanya contoh'
+                                    rating={5}
+                                />
 
-                    </Layout>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
 
                 </Layout>
 
-            </div>
+            </Layout>
 
-            {popAdd && <EditVenue setShowPopup={setPopAdd} />}
-            {popImage && <AddImage setShowPopup={setPopImage} />}
 
         </>
     )
