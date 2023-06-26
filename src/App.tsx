@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import OtpPage from "./pages/OtpPage";
 import ConfirmPay from "./pages/ConfirmPay";
+import Validate from "./pages/Validate";
 import DetailVenue from "./pages/DetailVenue";
 import MyVenue from "./pages/MyVenue";
 import AddVenue from "./pages/AddVenue";
@@ -18,6 +19,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/otp" element={<OtpPage />} />
           <Route path="/confirmpay" element={<ConfirmPay />} />
+          <Route path="/validate" element={<Validate />} />
           <Route path="/detail" element={<DetailVenue />} />
           <Route path="/myvenue" element={<MyVenue />} />
           <Route path="/addvenue" element={<AddVenue/>} />
