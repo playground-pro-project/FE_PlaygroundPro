@@ -21,6 +21,7 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState<boolean>(false)
+    const { setToken, setIdUser } = useStore();
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -36,8 +37,7 @@ const Login: React.FC = () => {
         },
     });
 
-    const { setToken } = useStore();
-
+  
     const HandleLogin = async () => {
         const { email, password } = formik.values;
         if (!email || !password) {
@@ -53,6 +53,8 @@ const Login: React.FC = () => {
             setLoading(true)
             const response = await Api.Login(email, password);
             setToken(response.data?.data?.token);
+            setIdUser(response.data?.data?.user_id);
+            
             navigate("/")
             Swal.fire({
                 position: 'center',
@@ -62,7 +64,7 @@ const Login: React.FC = () => {
                 timer: 1500
             })
 
-           
+
         } catch (error) {
             console.error(error);
             Swal.fire({
@@ -72,13 +74,11 @@ const Login: React.FC = () => {
             });
         } finally {
             setLoading(false)
-            
+
 
         }
 
     };
-
-
 
     return (
         <>
@@ -139,7 +139,11 @@ const Login: React.FC = () => {
                             <div className='hover:cursor-pointer mt-5 w-full h-12 rounded-xl bg-gradient-to-r from-[#73A9E9] to-[#854A7A] flex justify-center items-center transition-colors duration-300 hover:bg-gradient-to-r hover:from-[#854A7A] hover:to-[#73A9E9]'
                                 onClick={HandleLogin}
                             >
-                                <p className='text-xl font-bold text-white'>Login</p>
+                                {
+                                    loading ? <span className="text-white loading loading-dots loading-lg"></span>
+                                        :
+                                        <p className='text-xl font-bold text-white'>Login</p>
+                                }
                             </div>
 
                             <div className='flex items-center justify-center m-5'>
