@@ -31,13 +31,13 @@ export const Navbar = () => {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, Logout!'
     }).then((result) => {
       if (result.isConfirmed) {
         removeToken();
         Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
+          'Log Out',
+          'logout Success',
           'success'
         )
         navigate("/")
@@ -46,7 +46,6 @@ export const Navbar = () => {
     
   }
   
-console.log(Login)
   return <>
     <div className="navbar bg-darkBlue">
       <div className="flex-1 ml-4">
@@ -83,10 +82,6 @@ console.log(Login)
             </ul>
           </div>
         }
-
-
-
-
 
       </div>
     </div>

@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from 'axios';
-import {LoginResponse} from './Utils'
+import {LoginResponse, UserResponse} from './Utils'
 
 const instance = axios.create({
     baseURL: 'https://peterzalai.biz.id/',
@@ -15,5 +15,16 @@ const Api = {
         password,
       },
     }),
+    
+    GetUser: (
+        token: string
+      ): AxiosPromise<UserResponse[]> =>
+        instance({
+          method: 'GET',
+          url: '/users',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
 }
 export default Api;
