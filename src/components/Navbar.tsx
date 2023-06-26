@@ -1,21 +1,52 @@
 import Logo from '../assets/logo.png'
 import { BsFillGeoAltFill } from "react-icons/bs";
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
+import { useStore } from '../routes/store/store';
+import Swal from 'sweetalert2';
 
 export const Navbar = () => {
   const navigate = useNavigate();
-  const [Login, setLogin] = useState(false);
+  const [Login, setLogin] = useState(true);
+  const { token } = useStore();
+  const { removeToken } = useStore();
 
   useEffect(() => {
-    setLogin(!Login)
+    if (token && typeof token === 'string') {
+      setLogin(false)
+    }
+    
   }, []);
 
   const handleLogin = () => {
     navigate('/login')
 
   }
-
+  
+  const hendleLogout = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeToken();
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+        navigate("/")
+      }
+    })
+    
+  }
+  
+console.log(Login)
   return <>
     <div className="navbar bg-darkBlue">
       <div className="flex-1 ml-4">
@@ -48,7 +79,7 @@ export const Navbar = () => {
               <li><a>Become Owner
                 <span className="badge badge-secondary">New</span>
               </a></li>
-              <li className='font-bold text-red-500'><a>Logout</a></li>
+              <li className='font-bold text-red-500' onClick={hendleLogout}><a>Logout</a></li>
             </ul>
           </div>
         }

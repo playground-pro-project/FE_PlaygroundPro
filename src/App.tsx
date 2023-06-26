@@ -7,7 +7,6 @@ import ConfirmPay from "./pages/ConfirmPay";
 import Validate from "./pages/Validate";
 import DetailVenue from "./pages/DetailVenue";
 import MyVenue from "./pages/MyVenue";
-import AddVenue from "./pages/AddVenue";
 import MyTransaction from "./pages/MyTransaction";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
@@ -28,7 +27,7 @@ function App() {
           <Route path="/editprofile" element={<EditProfile />} />
           <Route path="/detail" element={<DetailVenue />} />
           <Route path="/myvenue" element={<MyVenue />} />
-          <Route path="/addvenue" element={<AddVenue />} />
+       
         </Routes>
       </BrowserRouter>
     </>

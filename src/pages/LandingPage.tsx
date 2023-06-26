@@ -3,38 +3,41 @@ import Wafe from '../assets/wave (1).png'
 import CardVenue from '../components/CardVenue'
 import Layout from '../components/Layout'
 import { BsSearch } from "react-icons/bs";
+import { useStore } from '../routes/store/store';
 
 const LandingPage = () => {
+    const { token } = useStore();
+    
     return (
         <div>
             <Layout
                 chose='layout'
             >
                 <div className="relative w-screen h-screen">
-                    <img src={ImgBackground} className="transition duration-500 ease-in-out hover:scale-110  absolute inset-0 object-cover object-center w-full h-full" alt="" />
+                    <img src={ImgBackground} className="absolute inset-0 object-cover object-center w-full h-full transition duration-500 ease-in-out hover:scale-110" alt="" />
                     <div className="absolute inset-0 bg-black opacity-50"></div>
-                    <div className="absolute inset-0 flex justify-center items-center w-full">
-                        <div className='w-1/2 flex justify-center items-center'>
+                    <div className="absolute inset-0 flex items-center justify-center w-full">
+                        <div className='flex items-center justify-center w-1/2'>
                             <div>
                                 <div>
-                                    <h1 className="text-4xl font-bold text-white z-20">"Lorem ipsum ini tagline website"</h1>
+                                    <h1 className="z-20 text-4xl font-bold text-white">"Lorem ipsum ini tagline website"</h1>
                                 </div>
-                                <div className='w-full h-16 bg-gray-100 mt-5 rounded-xl flex justify-between items-center grow p-5'>
-                                    <select className="select bg-gray-100">
+                                <div className='flex items-center justify-between w-full h-16 p-5 mt-5 bg-gray-100 rounded-xl grow'>
+                                    <select className="bg-gray-100 select">
                                         <option disabled selected>Category</option>
                                         <option>Sepak Bola</option>
                                         <option>Basket</option>
                                         <option>Voli</option>
                                     </select>
-                                    <div className="border border-gray-400 h-12"></div>
-                                    <select className="select bg-gray-100">
+                                    <div className="h-12 border border-gray-400"></div>
+                                    <select className="bg-gray-100 select">
                                         <option disabled selected>Place</option>
                                         <option>Jakarta</option>
                                         <option>Jogja</option>
                                         <option>Solo</option>
                                     </select>
-                                    <div className="border border-gray-400 h-12"></div>
-                                    <select className="select bg-gray-100">
+                                    <div className="h-12 border border-gray-400"></div>
+                                    <select className="bg-gray-100 select">
                                         <option disabled selected>Rating</option>
                                         <option>5</option>
                                         <option>4</option>
@@ -42,7 +45,7 @@ const LandingPage = () => {
                                         <option>2</option>
                                         <option>1</option>
                                     </select>
-                                    <div className="border border-gray-400 h-12"></div>
+                                    <div className="h-12 border border-gray-400"></div>
                                     <p className='mr-10'>Price</p>
 
                                     <BsSearch />
@@ -55,10 +58,10 @@ const LandingPage = () => {
 
                 </div>
                 <div className='w-screen min-h-screen'>
-                    <div className='w-full flex justify-center items-center'>
-                        <p className='text-3xl font-bold px-4 mt-5'>Best Over</p>
+                    <div className='flex items-center justify-center w-full'>
+                        <p className='px-4 mt-5 text-3xl font-bold'>Best Over</p>
                     </div>
-                    <div className='p-10 flex gap-5 justify-center flex-wrap'>
+                    <div className='flex flex-wrap justify-center gap-5 p-10'>
                         <CardVenue
                             Image='https://www.ahlilapangantenis.com/wp-content/uploads/2019/07/Cara-Merawat-Lapangan-Basket-sebelum-Renovasi-Dilakukan.jpg'
                             Place="Senayan - Jakarta"
