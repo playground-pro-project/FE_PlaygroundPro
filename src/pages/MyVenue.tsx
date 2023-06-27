@@ -67,13 +67,13 @@ const MyVenue = () => {
               </div>
 
             </div>
-            <div className="w-full flex justify-end gap-3">
-              <div className="modal-action mt-0 ">
+            <div className="flex justify-end w-full gap-3">
+              <div className="mt-0 modal-action ">
                 <label htmlFor="my-venue" className="btn btn-ghost">
                   Close
                 </label>
               </div>
-              <button className="btn btn-primary w-32 text-white">
+              <button className="w-32 text-white btn btn-primary">
                 Submit
               </button>
             </div>
@@ -102,7 +102,7 @@ const MyVenue = () => {
             <div className='w-full p-5 mt-10'>
               <div className='flex justify-end w-full'>
                 <label
-                  className="btn btn-primary w-32 mt-1 text-lg text-neutral font-medium"
+                  className="w-32 mt-1 text-lg font-medium btn btn-primary text-neutral"
                   htmlFor="my-venue"
                 >
                   Review
