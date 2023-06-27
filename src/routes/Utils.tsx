@@ -18,3 +18,17 @@ export interface UserResponse {
     }
 
 }
+
+export interface RegisterResponse {
+    data: {
+        user_id: string,
+        email: string,
+    }
+
+}
+export interface OTPResponse {
+    data: {
+        token: string,
+    }
+
+}
