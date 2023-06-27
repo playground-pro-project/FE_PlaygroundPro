@@ -3,7 +3,7 @@ export interface LoginResponse {
         user_id: string,
         email: string,
         token: string;
-        otp_enabled: boolean
+        account_status: string;
     }
 
 }
@@ -26,9 +26,17 @@ export interface RegisterResponse {
     }
 
 }
+
 export interface OTPResponse {
     data: {
-        token: string,
+        message: string,
+        status: string
     }
 
 }
+export interface ResendOTPResponse {
+    message: string
+    
+
+}
+

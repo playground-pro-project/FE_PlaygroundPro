@@ -21,7 +21,7 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState<boolean>(false)
-    const { setToken, setIdUser } = useStore();
+    const { setToken, setIdUser , setEmail} = useStore();
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -37,7 +37,7 @@ const Login: React.FC = () => {
         },
     });
 
-  
+
     const HandleLogin = async () => {
         const { email, password } = formik.values;
         if (!email || !password) {
@@ -54,8 +54,14 @@ const Login: React.FC = () => {
             const response = await Api.Login(email, password);
             setToken(response.data?.data?.token);
             setIdUser(response.data?.data?.user_id);
+            setEmail(response.data?.data?.email);
+            if (response.data?.data?.account_status === "unverified") {
+                navigate("/otp")
+            } else{
+                navigate("/")
+            }
             
-            navigate("/")
+
             Swal.fire({
                 position: 'center',
                 icon: 'success',
@@ -74,8 +80,6 @@ const Login: React.FC = () => {
             });
         } finally {
             setLoading(false)
-
-
         }
 
     };
