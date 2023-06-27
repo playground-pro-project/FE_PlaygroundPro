@@ -15,8 +15,13 @@ interface StoreState {
     removeRole:() => void;
     
     email: string | null;
-    setEmail: (role: string | null) => void;
+    setEmail: (email: string | null) => void;
     removeEmail:() => void;
+
+    password: string | null;
+    setPassword: (password: string | null) => void;
+    removePassword:() => void;
+
 }
 
 const store = create<StoreState>((set: SetState<StoreState>) => ({
@@ -75,6 +80,20 @@ const store = create<StoreState>((set: SetState<StoreState>) => ({
     removeEmail: () => {
         localStorage.removeItem('email');
         set({ email: null });
+    },
+    
+    password: localStorage.getItem('password'),
+    setPassword: (password) => {
+        if (password) {
+            localStorage.setItem('password', password);
+        } else {
+            localStorage.removeItem('password');
+        }
+        set({ password });
+    },
+    removePassword: () => {
+        localStorage.removeItem('password');
+        set({ password: null });
     },
 
 }));

@@ -1,12 +1,12 @@
 import axios, { AxiosPromise } from 'axios';
-import { LoginResponse, OTPResponse, RegisterResponse, UserResponse } from './Utils'
+import { LoginResponse, OTPResponse, RegisterResponse, UserResponse, ResendOTPResponse } from './Utils'
 
 const instance = axios.create({
   baseURL: 'https://peterzalai.biz.id/',
 });
 
 const Api = {
-  Login: (email: string, password: string): AxiosPromise<LoginResponse> =>
+  Login: (email: string | null, password: string | null): AxiosPromise<LoginResponse> =>
     instance({
       method: 'POST',
       url: '/login',
@@ -32,7 +32,7 @@ const Api = {
         password
       },
     }),
-
+ 
   ValidationOTP: (
     user_id: any,
     otp_code: string
@@ -43,6 +43,19 @@ const Api = {
       data: {
         user_id,
         otp_code,
+      },
+    }),
+
+  ResendOTP: (
+    email: string | null,
+    password: string | null
+  ): AxiosPromise<ResendOTPResponse> =>
+    instance({
+      method: 'POST',
+      url: '/resend-otp',
+      data: {
+        email,
+        password,
       },
     }),
 

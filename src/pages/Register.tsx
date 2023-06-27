@@ -30,7 +30,7 @@ const Register: React.FC = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState<boolean>(false)
-    const { setIdUser , setEmail} = useStore();
+    const { setIdUser , setEmail, setPassword} = useStore();
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -56,8 +56,9 @@ const Register: React.FC = () => {
             const response = await Api.Register(fullname, email, phone, password);
             setIdUser(response.data?.data?.user_id);
             setEmail(email)
-            navigate("/otp")
-
+            setPassword(password)
+            
+            
             Swal.fire({
                 position: 'center',
                 icon: 'success',
@@ -65,6 +66,7 @@ const Register: React.FC = () => {
                 showConfirmButton: false,
                 timer: 1500
             })
+            navigate("/otp")
 
 
         } catch (error) {

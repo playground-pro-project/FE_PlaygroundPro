@@ -18,6 +18,7 @@ export const Navbar = () => {
     
   }, []);
 
+
   const handleLogin = () => {
     navigate('/login')
 
