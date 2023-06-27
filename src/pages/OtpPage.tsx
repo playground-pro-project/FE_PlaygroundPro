@@ -21,7 +21,7 @@ const OtpPage = () => {
     const [progress, setProgress] = useState(30);
     const [loading, setLoading] = useState<boolean>(false)
     const { email, idUser, password } = useStore();
-    const { setToken, setIdUser, setEmail } = useStore();
+    const { setToken, setIdUser, setEmail, setRole } = useStore();
 
     const formik = useFormik({
         initialValues: {
@@ -58,6 +58,7 @@ const OtpPage = () => {
             setToken(response.data?.data?.token);
             setIdUser(response.data?.data?.user_id);
             setEmail(response.data?.data?.email);
+            setRole(response.data?.data?.role)
             if (response.data?.data?.account_status === "unverified") {
                 navigate("/otp")
             } else {
@@ -90,7 +91,7 @@ const OtpPage = () => {
 
         try {
             setLoading(true)
-            const response = await Api.ResendOTP(email, password)
+            const response = await Api.ResendOTP(email)
             console.log(response.data.message)
         }
         catch (error) {

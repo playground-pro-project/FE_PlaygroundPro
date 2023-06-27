@@ -59,10 +59,11 @@ const Register: React.FC = () => {
             setPassword(password)
             
             
+            
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Login Success',
+                title: 'Register Success',
                 showConfirmButton: false,
                 timer: 1500
             })

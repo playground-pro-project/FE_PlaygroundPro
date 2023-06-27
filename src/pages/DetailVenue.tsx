@@ -13,8 +13,11 @@ import { Acordion } from '../components/Acordion';
 import { Maps } from '../components/Maps';
 import { Modals } from '../components/Modal';
 import { Input } from '../components/Input';
+import { useStore } from '../routes/store/store';
+import Api from '../routes/Routes';
 
 const DetailVenue = () => {
+    const { role ,idVenue} = useStore();
 
     const images: string[] = [
         'https://www.ahlilapangantenis.com/wp-content/uploads/2019/07/Cara-Merawat-Lapangan-Basket-sebelum-Renovasi-Dilakukan.jpg',
@@ -22,11 +25,23 @@ const DetailVenue = () => {
         'https://blogger.googleusercontent.com/img/a/AVvXsEi9wOvkZra-yskxVfU0zlmFAZLqDcBkL340OTepI0v0tfAh8OWzN1AgRfU1F9VzhzQYms5N17SQaLIliv4KkZLjUjejIoQZmpv9f6rIqqj-3JBD03ifthcaXw8xlWH5GBBXd9yS0Npqql_cB0zhWPwME3F-WjcYu-NsBs77T4ILNsu2nKfg-GsOpGhC=w497-h373'
     ];
 
-    const [user, setUser] = useState<string>("")
+    const [user, setUser] = useState<string | null>("")
  
     useEffect(() => {
-        setUser("owner")
+        setUser(role)
+        const fetchVenue = async () => {
+            try {
+                const response = await Api.GetVenueById(idVenue);
+                console.log(response.data)
+
+            } catch (error) {
+                console.error(error)
+            }
+        };
+
+        fetchVenue();
     }, []);
+   
 
     const latitude = -7.3804308; // Contoh nilai latitude
     const longitude = 109.3664238; // Contoh nilai longitude
@@ -105,7 +120,7 @@ const DetailVenue = () => {
                     </div>
 
                 </Modals>
-                \
+                
                 <Layout
                     chose='container'>
                     <Carousel
@@ -140,7 +155,7 @@ const DetailVenue = () => {
 
                             </div>
 
-                            {user === "default" ?
+                            {user === "user" ?
                                 <div className='w-full p-2 mt-10'>
                                     <button className='w-full h-12 font-semibold text-white bg-primary rounded-xl'>
                                         Check Availability
@@ -170,7 +185,7 @@ const DetailVenue = () => {
                     </div>
 
 
-                    <div className={`${user === "default" ? "" : "hidden"}`}>
+                    <div className={`${user === "user" ? "" : "hidden"}`}>
 
                         <div className={`m-5`}>
                             <span className='text-3xl font-bold'>Review & Ratings</span>

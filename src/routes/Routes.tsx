@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from 'axios';
-import { LoginResponse, OTPResponse, RegisterResponse, UserResponse, ResendOTPResponse } from './Utils'
+import { LoginResponse, OTPResponse, RegisterResponse, UserResponse, ResendOTPResponse, GetVenues, GetVenuesById } from './Utils'
 
 const instance = axios.create({
   baseURL: 'https://peterzalai.biz.id/',
@@ -47,16 +47,28 @@ const Api = {
     }),
 
   ResendOTP: (
-    email: string | null,
-    password: string | null
+    email: string | null
+   
   ): AxiosPromise<ResendOTPResponse> =>
     instance({
       method: 'POST',
       url: '/resend-otp',
       data: {
-        email,
-        password,
+        email
+       
       },
+    }),
+
+  GetVenue: (): AxiosPromise<GetVenues[]> =>
+    instance({
+      method: 'GET',
+      url: '/venues',
+    }),
+    
+  GetVenueById: (id: string | null): AxiosPromise<GetVenuesById[]> =>
+    instance({
+      method: 'GET',
+      url: `/venues/${id}`,
     }),
 
   GetUser: (

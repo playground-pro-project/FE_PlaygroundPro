@@ -1,26 +1,30 @@
 import create, { SetState } from 'zustand';
 
 interface StoreState {
-    
+
     token: string | null;
     setToken: (token: string | null) => void;
     removeToken: () => void;
 
     idUser: string | null;
     setIdUser: (idUser: string | null) => void;
-    removeIdUser:() => void;
+    removeIdUser: () => void;
 
     role: string | null;
     setRole: (role: string | null) => void;
-    removeRole:() => void;
-    
+    removeRole: () => void;
+
     email: string | null;
     setEmail: (email: string | null) => void;
-    removeEmail:() => void;
+    removeEmail: () => void;
 
     password: string | null;
     setPassword: (password: string | null) => void;
-    removePassword:() => void;
+    removePassword: () => void;
+    
+    idVenue: string | null;
+    setIdVenue: (idVenue: string | null) => void;
+    removeIdVenue: () => void;
 
 }
 
@@ -67,7 +71,7 @@ const store = create<StoreState>((set: SetState<StoreState>) => ({
         localStorage.removeItem('role');
         set({ role: null });
     },
-    
+
     email: localStorage.getItem('email'),
     setEmail: (email) => {
         if (email) {
@@ -81,7 +85,7 @@ const store = create<StoreState>((set: SetState<StoreState>) => ({
         localStorage.removeItem('email');
         set({ email: null });
     },
-    
+
     password: localStorage.getItem('password'),
     setPassword: (password) => {
         if (password) {
@@ -94,6 +98,20 @@ const store = create<StoreState>((set: SetState<StoreState>) => ({
     removePassword: () => {
         localStorage.removeItem('password');
         set({ password: null });
+    },
+
+    idVenue: localStorage.getItem('idVenue'),
+    setIdVenue: (idVenue) => {
+        if (idVenue) {
+            localStorage.setItem('idVenue', idVenue);
+        } else {
+            localStorage.removeItem('idVenue');
+        }
+        set({ idVenue });
+    },
+    removeIdVenue: () => {
+        localStorage.removeItem('idVenue');
+        set({ idVenue: null });
     },
 
 }));
