@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate} from 'react-router-dom';
 import { useStore } from '../routes/store/store';
 import Swal from 'sweetalert2';
+import LocationComponent from './Geolocation'
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ export const Navbar = () => {
       <div className="flex-none">
         <div className='flex items-center gap-2 mr-5 font-semibold text-white'>
           <BsFillGeoAltFill />
-          <p>Jakarta</p>
+          <p><LocationComponent/></p>
         </div>
         {Login ?
 

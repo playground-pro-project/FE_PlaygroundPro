@@ -11,6 +11,7 @@ import MyTransaction from "../pages/MyTransaction";
 import Profile from "../pages/Profile";
 import EditProfile from "../pages/EditProfile";
 import CheckAvail from "../pages/CheckAvail";
+import LocationComponent from "../components/Geolocation"
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/detail" element={<DetailVenue />} />
           <Route path="/myvenue" element={<MyVenue />} />
           <Route path="/checkavail" element={<CheckAvail />} />
+          
         </Routes>
       </BrowserRouter>
     </>

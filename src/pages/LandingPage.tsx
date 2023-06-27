@@ -1,13 +1,34 @@
+import React, { useEffect, useState } from 'react';
 import ImgBackground from '../assets/2111.w026.n002.1053B.p1.1053.jpg'
 import Wafe from '../assets/wave (1).png'
 import CardVenue from '../components/CardVenue'
 import Layout from '../components/Layout'
 import { BsSearch } from "react-icons/bs";
-import { useStore } from '../routes/store/store';
+import Api from '../routes/Routes';
 
 const LandingPage = () => {
-    const { token } = useStore();
-    
+    const [venue, setVenue] = useState<any>([]);
+
+    useEffect(() => {
+        const fetchVenue = async () => {
+            try {
+                const response = await Api.GetVenue();
+                setVenue(response.data)
+
+            } catch (error) {
+                console.error(error)
+            }
+        };
+
+        fetchVenue();
+
+    }, []);
+
+    // console.log("ini venue", venue.map((item: any) => (item.name)))
+    console.log("ini venue", venue.data?.map((item: any) => (item.name)))
+
+
+
     return (
         <div>
             <Layout
@@ -60,48 +81,20 @@ const LandingPage = () => {
                 <div className='w-screen min-h-screen'>
                     <div className='flex items-center justify-center w-full'>
                         <p className='px-4 mt-5 text-3xl font-bold'>Best Over</p>
+
                     </div>
                     <div className='flex flex-wrap justify-center gap-5 p-10'>
-                        <CardVenue
-                            Image='https://www.ahlilapangantenis.com/wp-content/uploads/2019/07/Cara-Merawat-Lapangan-Basket-sebelum-Renovasi-Dilakukan.jpg'
-                            Place="Senayan - Jakarta"
-                            Range={10}
-                            Name='Lapangan Basket Senayan'
-                            Rating={4.5}
-                            Price={120000}
-                        />
-                        <CardVenue
-                            Image='https://www.ahlilapangantenis.com/wp-content/uploads/2019/07/Cara-Merawat-Lapangan-Basket-sebelum-Renovasi-Dilakukan.jpg'
-                            Place="Senayan - Jakarta"
-                            Range={10}
-                            Name='Lapangan Basket Senayan'
-                            Rating={4.5}
-                            Price={120000}
-                        />
-                        <CardVenue
-                            Image='https://www.ahlilapangantenis.com/wp-content/uploads/2019/07/Cara-Merawat-Lapangan-Basket-sebelum-Renovasi-Dilakukan.jpg'
-                            Place="Senayan - Jakarta"
-                            Range={10}
-                            Name='Lapangan Basket Senayan'
-                            Rating={4.5}
-                            Price={120000}
-                        />
-                        <CardVenue
-                            Image='https://www.ahlilapangantenis.com/wp-content/uploads/2019/07/Cara-Merawat-Lapangan-Basket-sebelum-Renovasi-Dilakukan.jpg'
-                            Place="Senayan - Jakarta"
-                            Range={10}
-                            Name='Lapangan Basket Senayan'
-                            Rating={4.5}
-                            Price={120000}
-                        />
-                        <CardVenue
-                            Image='https://www.ahlilapangantenis.com/wp-content/uploads/2019/07/Cara-Merawat-Lapangan-Basket-sebelum-Renovasi-Dilakukan.jpg'
-                            Place="Senayan - Jakarta"
-                            Range={10}
-                            Name='Lapangan Basket Senayan'
-                            Rating={4.5}
-                            Price={120000}
-                        />
+                        {venue.data?.map((item: any) => (
+                            <CardVenue
+                                IdVenue={item.venue_id}
+                                Image={item.image === undefined ? "https://www.ahlilapangantenis.com/wp-content/uploads/2019/07/Cara-Merawat-Lapangan-Basket-sebelum-Renovasi-Dilakukan.jpg" : item.image}
+                                Place={item.location}
+                                Range={10}
+                                Name={item.name}
+                                Rating={item.rating}
+                                Price={item.price}
+                            />))}
+
 
                     </div>
 

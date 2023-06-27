@@ -21,7 +21,7 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState<boolean>(false)
-    const { setToken, setIdUser , setEmail} = useStore();
+    const { setToken, setIdUser , setEmail, setPassword, setRole} = useStore();
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -55,6 +55,9 @@ const Login: React.FC = () => {
             setToken(response.data?.data?.token);
             setIdUser(response.data?.data?.user_id);
             setEmail(response.data?.data?.email);
+            setPassword(password)
+            setRole(response.data?.data?.role)
+            console.log(response.data?.data?.role)
             if (response.data?.data?.account_status === "unverified") {
                 navigate("/otp")
             } else{
