@@ -41,6 +41,10 @@ export interface ResendOTPResponse {
 
 
 }
+export interface EditVenueResponse {
+    message: string
+
+}
 
 export interface GetVenuesById {
     data: {
@@ -48,14 +52,30 @@ export interface GetVenuesById {
         name: string,
         description: string,
         location: string,
+        service_time: string,
         price: number,
         category: string,
         distance: number,
+        total_reviews: number,
+        average_rating: number,
 
     }
+   
 
 }
 export interface GetVenues {
+    data: {
+        venue_id: string,
+        name: string,
+        location: string,
+        price: number,
+        category: string,
+        distance: number,
+        reviews: number
+    }
+
+}
+export interface AddVenues {
     data: {
         venue_id: string,
         name: string,
@@ -77,5 +97,9 @@ export interface GetReview {
             fullname: string
           }
         }]
+
+}
+export interface UploadImageVenue {
+    messege: string;
 
 }

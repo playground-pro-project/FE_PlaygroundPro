@@ -1,5 +1,13 @@
 import axios, { AxiosPromise } from 'axios';
-import { LoginResponse, OTPResponse, RegisterResponse, UserResponse, ResendOTPResponse, GetVenues, GetVenuesById, GetReview } from './Utils'
+import { LoginResponse, 
+  OTPResponse, 
+  RegisterResponse,
+   UserResponse, 
+   ResendOTPResponse, 
+   GetVenues, 
+   GetVenuesById, 
+   GetReview, 
+   EditVenueResponse } from './Utils'
 
 const instance = axios.create({
   baseURL: 'https://peterzalai.biz.id/',
@@ -32,7 +40,7 @@ const Api = {
         password
       },
     }),
- 
+
   ValidationOTP: (
     user_id: any,
     otp_code: string
@@ -48,31 +56,15 @@ const Api = {
 
   ResendOTP: (
     email: string | null
-   
+
   ): AxiosPromise<ResendOTPResponse> =>
     instance({
       method: 'POST',
       url: '/resend-otp',
       data: {
         email
-       
-      },
-    }),
 
-  GetVenue: (): AxiosPromise<GetVenues[]> =>
-    instance({
-      method: 'GET',
-      url: '/venues',
-    }),
-    
-  GetVenueById: (id: string | null, token: string | null): AxiosPromise<GetVenuesById> =>
-    instance({
-      method: 'GET',
-      url: `/venues/${id}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
       },
-
     }),
 
   GetReview: (id: string | null, token: string | null): AxiosPromise<GetReview[]> =>
@@ -94,5 +86,84 @@ const Api = {
         Authorization: `Bearer ${token}`,
       },
     }),
+
+
+  GetVenue: (): AxiosPromise<GetVenues[]> =>
+    instance({
+      method: 'GET',
+      url: '/venues',
+    }),
+
+  GetVenueById: (id: string | null, token: string | null): AxiosPromise<GetVenuesById> =>
+    instance({
+      method: 'GET',
+      url: `/venues/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+
+    }),
+
+  DeleteVenueById: (id: string | null, token: string | null): AxiosPromise<GetVenuesById> =>
+    instance({
+      method: 'DELETE',
+      url: `/venues/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+
+    }),
+
+  EditVenue: (
+    token: string | null, 
+    id_venue:string | null, 
+    name: string | null, 
+    description: string | null, 
+    location: string | null, 
+    price: number | null,
+   
+  ): AxiosPromise<EditVenueResponse> =>
+    instance({
+      method: 'PUT',
+      url: `/venues/${id_venue}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data:{
+        name,
+        description,
+        location,
+        price,
+      
+      }
+    }),
+
+  AddVenue: (
+    token: string | null, 
+    name: string | null, 
+    description: string | null, 
+    location: string | null, 
+    price: number | null,
+    category: string | null,
+   
+  ): AxiosPromise<EditVenueResponse> =>
+
+    instance({
+      method: 'POST',
+      url: `/venues`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data:{
+        name,
+        description,
+        location,
+        price,
+        category,
+      
+      }
+    }),
+
+
 }
 export default Api;
