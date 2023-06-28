@@ -65,10 +65,14 @@ const Api = {
       url: '/venues',
     }),
     
-  GetVenueById: (id: string | null): AxiosPromise<GetVenuesById[]> =>
+  GetVenueById: (id: string | null, token: string | null): AxiosPromise<GetVenuesById> =>
     instance({
       method: 'GET',
       url: `/venues/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+
     }),
 
   GetUser: (

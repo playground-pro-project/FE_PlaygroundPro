@@ -24,7 +24,7 @@ export interface RegisterResponse {
     data: {
         user_id: string,
         email: string,
-        
+
     }
 
 }
@@ -51,22 +51,33 @@ export interface GetVenuesById {
         price: number,
         category: string,
         distance: number,
-        reviews: [
-            {
-                user: {
-                    user_id: string,
-                    full_name: string
-                },
-                review: string,
-                rating: number
-            }
-        ],
-        venue_images: [
-            {
-                image_url: string
-            }
-        ]
+
     }
+
+    // data: {
+    //     venue_id: string,
+    //     name: string,
+    //     description: string,
+    //     location: string,
+    //     price: number,
+    //     category: string,
+    //     distance: number,
+    //     reviews: [
+    //         {
+    //             user: {
+    //                 user_id: string,
+    //                 full_name: string
+    //             },
+    //             review: string,
+    //             rating: number
+    //         }
+    //     ],
+    //     venue_images: [
+    //         {
+    //             image_url: string
+    //         }
+    //     ]
+    // }
 
 }
 export interface GetVenues {
