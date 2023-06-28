@@ -54,31 +54,6 @@ export interface GetVenuesById {
 
     }
 
-    // data: {
-    //     venue_id: string,
-    //     name: string,
-    //     description: string,
-    //     location: string,
-    //     price: number,
-    //     category: string,
-    //     distance: number,
-    //     reviews: [
-    //         {
-    //             user: {
-    //                 user_id: string,
-    //                 full_name: string
-    //             },
-    //             review: string,
-    //             rating: number
-    //         }
-    //     ],
-    //     venue_images: [
-    //         {
-    //             image_url: string
-    //         }
-    //     ]
-    // }
-
 }
 export interface GetVenues {
     data: {
@@ -90,5 +65,17 @@ export interface GetVenues {
         distance: number,
         reviews: number
     }
+
+}
+export interface GetReview {
+    data: [
+        {
+          user_id: string,
+          review: string,
+          rating: number,
+          user: {
+            fullname: string
+          }
+        }]
 
 }

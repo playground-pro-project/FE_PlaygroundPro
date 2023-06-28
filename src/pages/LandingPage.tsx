@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ImgBackground from '../assets/2111.w026.n002.1053B.p1.1053.jpg'
 import Wafe from '../assets/wave (1).png'
 import CardVenue from '../components/CardVenue'

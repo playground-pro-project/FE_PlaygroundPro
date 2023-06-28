@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from 'axios';
-import { LoginResponse, OTPResponse, RegisterResponse, UserResponse, ResendOTPResponse, GetVenues, GetVenuesById } from './Utils'
+import { LoginResponse, OTPResponse, RegisterResponse, UserResponse, ResendOTPResponse, GetVenues, GetVenuesById, GetReview } from './Utils'
 
 const instance = axios.create({
   baseURL: 'https://peterzalai.biz.id/',
@@ -73,6 +73,15 @@ const Api = {
         Authorization: `Bearer ${token}`,
       },
 
+    }),
+
+  GetReview: (id: string | null, token: string | null): AxiosPromise<GetReview[]> =>
+    instance({
+      method: 'GET',
+      url: `/venues/${id}/reviews`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }),
 
   GetUser: (
