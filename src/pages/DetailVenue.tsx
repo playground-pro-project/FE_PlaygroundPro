@@ -17,7 +17,7 @@ import { useStore } from '../routes/store/store';
 import Api from '../routes/Routes';
 
 const DetailVenue = () => {
-    const { role ,idVenue} = useStore();
+    const { role ,idVenue, token} = useStore();
 
     const images: string[] = [
         'https://www.ahlilapangantenis.com/wp-content/uploads/2019/07/Cara-Merawat-Lapangan-Basket-sebelum-Renovasi-Dilakukan.jpg',
@@ -26,13 +26,15 @@ const DetailVenue = () => {
     ];
 
     const [user, setUser] = useState<string | null>("")
+    const [venue , setVenue] = useState<any>("")
  
     useEffect(() => {
         setUser(role)
         const fetchVenue = async () => {
             try {
-                const response = await Api.GetVenueById(idVenue);
-                console.log(response.data)
+                const response = await Api.GetVenueById(idVenue, token);
+                setVenue(response.data?.data)
+                console.log(response.data?.data)
 
             } catch (error) {
                 console.error(error)
@@ -135,22 +137,22 @@ const DetailVenue = () => {
                         <div className='pl-5 mt-3'>
                             <div className='flex w-full '>
                                 <div className='w-4/5 text-4xl font-bold'>
-                                    lapangan setia budi
+                                    {venue.name}
                                 </div>
                                 <div className='flex items-center justify-end w-1/5 gap-2 pr-5 text-xl font-bold text-yellow'>
-                                    <span className='text-black'>4,5</span>  <BsFillStarFill />
+                                    <span className='text-black'>{venue.rating}</span>  <BsFillStarFill />
                                 </div>
                             </div>
                             <div className='flex items-center gap-3 mt-5 text-xl font-semibold text-gray-500'>
-                                <BsFillGeoAltFill />Senayan Jakarta <span className='text-white badge bg-oren'>10 Km </span>
+                                <BsFillGeoAltFill />{venue.location}a <span className='text-white badge bg-oren'>10 Km </span>
                             </div>
                             <div className='mt-5 text-4xl font-bold text-oren'>
-                                Rp.120.000 / malam
+                                Rp.{venue.price} / malam
                             </div>
 
                             <div className='w-full pr-5 mt-5'>
                                 <p className='mr-5'>
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                    {venue.description}
                                 </p>
 
                             </div>
