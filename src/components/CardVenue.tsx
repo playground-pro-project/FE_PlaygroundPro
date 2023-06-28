@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { BsFillGeoAltFill, BsFillStarFill } from "react-icons/bs";
 import { useStore } from '../routes/store/store';
 import { useNavigate} from 'react-router-dom';

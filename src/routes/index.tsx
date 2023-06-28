@@ -11,7 +11,6 @@ import MyTransaction from "../pages/MyTransaction";
 import Profile from "../pages/Profile";
 import EditProfile from "../pages/EditProfile";
 import CheckAvail from "../pages/CheckAvail";
-import LocationComponent from "../components/Geolocation"
 
 function App() {
   return (

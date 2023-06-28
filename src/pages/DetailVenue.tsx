@@ -34,14 +34,24 @@ const DetailVenue = () => {
             try {
                 const response = await Api.GetVenueById(idVenue, token);
                 setVenue(response.data?.data)
-                console.log(response.data?.data)
 
             } catch (error) {
                 console.error(error)
             }
         };
 
+        const fetchReview = async () => {
+            try {
+                const response = await Api.GetReview(idVenue, token);
+                console.log(response.data)
+            }catch (error) {
+                console.error(error)
+            }
+        }
+
         fetchVenue();
+        fetchReview();
+        
     }, []);
    
 

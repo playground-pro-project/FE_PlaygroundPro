@@ -1,7 +1,7 @@
 import Logo from '../assets/logo.png'
 import { BsFillGeoAltFill } from "react-icons/bs";
 import { useState, useEffect } from 'react';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useStore } from '../routes/store/store';
 import Swal from 'sweetalert2';
 import LocationComponent from './Geolocation'
@@ -9,14 +9,14 @@ import LocationComponent from './Geolocation'
 export const Navbar = () => {
   const navigate = useNavigate();
   const [Login, setLogin] = useState(true);
-  const { token } = useStore();
+  const { token, role } = useStore();
   const { removeToken } = useStore();
 
   useEffect(() => {
     if (token && typeof token === 'string') {
       setLogin(false)
     }
-    
+
   }, []);
 
 
@@ -24,7 +24,7 @@ export const Navbar = () => {
     navigate('/login')
 
   }
-  
+
   const hendleLogout = () => {
     Swal.fire({
       title: 'Are you sure?',
@@ -45,18 +45,20 @@ export const Navbar = () => {
         navigate("/")
       }
     })
-    
+
   }
-  
+
   return <>
     <div className="navbar bg-darkBlue">
       <div className="flex-1 ml-4">
-        <img src={Logo} alt="Logo" className='w-32' />
+        <Link to={"/"}>
+          <img src={Logo} alt="Logo" className='w-32' />
+        </Link>
       </div>
       <div className="flex-none">
         <div className='flex items-center gap-2 mr-5 font-semibold text-white'>
           <BsFillGeoAltFill />
-          <p><LocationComponent/></p>
+          <p><LocationComponent /></p>
         </div>
         {Login ?
 
@@ -72,21 +74,37 @@ export const Navbar = () => {
             </label>
             <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
               <li>
-                <a className="justify-between">
-                  Profile
-                </a>
+                <Link to={"/profile"}>
+                  <a className="justify-between">
+                    Profile
+                  </a>
+                </Link>
               </li>
-              <li><a>My Transaction</a></li>
-              <li><a>Become Owner
-                <span className="badge badge-secondary">New</span>
-              </a></li>
+              <li>
+                <Link to={'/mytransaction'}>
+                  <a>My Transaction</a>
+                </Link>
+              </li>
+              <li>
+                {role === "user" ?
+                  <Link to={'/profile'}>
+                    <a>Become Owner
+                    </a>
+                    <span className="badge badge-secondary">New</span>
+                  </Link>
+                  :
+                  <Link to={'/myvenue'}>
+                    <a>My Venue</a>
+                  </Link>
+                }
+              </li>
               <li className='font-bold text-red-500' onClick={hendleLogout}><a>Logout</a></li>
             </ul>
           </div>
         }
 
       </div>
-    </div>
+    </div >
 
   </>;
 };
