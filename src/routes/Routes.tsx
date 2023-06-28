@@ -1,5 +1,13 @@
 import axios, { AxiosPromise } from 'axios';
-import { LoginResponse, OTPResponse, RegisterResponse, UserResponse, ResendOTPResponse, GetVenues, GetVenuesById, GetReview, EditVenueResponse, UploadImageVenue } from './Utils'
+import { LoginResponse, 
+  OTPResponse, 
+  RegisterResponse,
+   UserResponse, 
+   ResendOTPResponse, 
+   GetVenues, 
+   GetVenuesById, 
+   GetReview, 
+   EditVenueResponse } from './Utils'
 
 const instance = axios.create({
   baseURL: 'https://peterzalai.biz.id/',
