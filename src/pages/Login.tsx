@@ -143,7 +143,7 @@ const Login: React.FC = () => {
                                 <Link to="/forgot" className='font-bold'>Forgot Acount ?</Link>
 
                             </div>
-                            <div className='hover:cursor-pointer mt-5 w-full h-12 rounded-xl bg-gradient-to-r from-[#73A9E9] to-[#854A7A] flex justify-center items-center transition-colors duration-300 hover:bg-gradient-to-r hover:from-[#854A7A] hover:to-[#73A9E9]'
+                            <div id='btn-login' className='hover:cursor-pointer mt-5 w-full h-12 rounded-xl bg-gradient-to-r from-[#73A9E9] to-[#854A7A] flex justify-center items-center transition-colors duration-300 hover:bg-gradient-to-r hover:from-[#854A7A] hover:to-[#73A9E9]'
                                 onClick={HandleLogin}
                             >
                                 {
