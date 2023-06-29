@@ -30,27 +30,23 @@ const schema = Yup.object({
 });
 
 const DetailVenue = () => {
-    const { role, idVenue, token } = useStore();
-
-    const images: string[] = [
-        'https://www.ahlilapangantenis.com/wp-content/uploads/2019/07/Cara-Merawat-Lapangan-Basket-sebelum-Renovasi-Dilakukan.jpg',
-        'https://www.jasapembuatanlapangan.id/wp-content/uploads/2022/02/rencana-anggaran-biaya-pembuatan-lapangan-basket-fitur-image.png',
-        'https://blogger.googleusercontent.com/img/a/AVvXsEi9wOvkZra-yskxVfU0zlmFAZLqDcBkL340OTepI0v0tfAh8OWzN1AgRfU1F9VzhzQYms5N17SQaLIliv4KkZLjUjejIoQZmpv9f6rIqqj-3JBD03ifthcaXw8xlWH5GBBXd9yS0Npqql_cB0zhWPwME3F-WjcYu-NsBs77T4ILNsu2nKfg-GsOpGhC=w497-h373'
-    ];
-
-    const [user, setUser] = useState<string | null>("")
+    const { idVenue, token, idUser } = useStore();
+    const [user_id, setUserId] = useState<string | null>("")
     const [venue, setVenue] = useState<any>("")
     const [review, setReview] = useState<any>([]);
+    const [image, setImage] = useState<any>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [selectedFile, setSelectedFile] = useState<any>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     useEffect(() => {
-        setUser(role)
+
         const fetchVenue = async () => {
             try {
                 const response = await Api.GetVenueById(idVenue, token);
                 setVenue(response.data?.data)
+                setUserId(response.data?.data.user_id)
+                setImage(response.data?.data.venue_pictures)
 
             } catch (error) {
                 console.error(error)
@@ -66,10 +62,24 @@ const DetailVenue = () => {
             }
         }
 
+        // const FetchImage = () => {
+        //     const urls = image.map((item: any) => (item.venue_picture_url));
+        // setImage(urls);
+        // }
+
         fetchVenue();
         fetchReview();
 
     }, []);
+
+    useEffect(() => {
+        
+        
+    }, [])
+    
+    console.log(image.map((item: any) => (item.venue_picture_url)))
+ 
+
 
     const formik = useFormik({
         initialValues: {
@@ -99,7 +109,7 @@ const DetailVenue = () => {
         }
         finally {
             formik.resetForm();
-            console.log(formik.values.price)
+
         }
     }
 
@@ -130,24 +140,24 @@ const DetailVenue = () => {
         formData.append('images', selectedFile);
 
         try {
-            
+
             const response = await axios.post(`https://peterzalai.biz.id/venues${idVenue}/images`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,
                 }
             });
-            
+
             console.log(response.data)
-            
+
             Swal.fire({
                 position: 'center',
                 icon: 'success',
                 title: 'Upgrade Acount Success',
                 showConfirmButton: false,
                 timer: 1800
-              })
-             
+            })
+
 
 
         } catch (error) {
@@ -156,9 +166,9 @@ const DetailVenue = () => {
                 icon: "error",
                 title: "Failed",
                 text: "Gagal Upload Image",
-              });
+            });
         } finally {
-           
+
         }
     };
 
@@ -189,32 +199,35 @@ const DetailVenue = () => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, Delete'
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-              HandleDelete()
-              Swal.fire(
-                'Log Out',
-                'Delete Venue Success',
-                'success'
-              )
-              
+                HandleDelete()
+
+
             }
-          })
+        })
     }
 
-    const HandleDelete = async () =>{
-       
+    const HandleDelete = async () => {
+
         try {
             const response = await Api.DeleteVenueById(token, idVenue)
             console.log(response)
+            Swal.fire(
+                'Log Out',
+                'Delete Venue Success',
+                'success'
+            )
         }
         catch (error) {
             console.error(error)
         }
         finally {
-           
+
         }
     }
+
+console.log(image)
 
 
     return (
@@ -290,13 +303,13 @@ const DetailVenue = () => {
                                     <img src={previewUrl} alt="Preview" className="object-cover w-full h-full rounded-xl" />
                                 ) : (
                                     <div className="text-center">
-                                    <div className='flex justify-center'>
-                                        <BsFillCloudArrowUpFill class='text-5xl' />
+                                        <div className='flex justify-center'>
+                                            <BsFillCloudArrowUpFill class='text-5xl' />
+                                        </div>
+                                        <span className='text-sm'>Drag and drop or browse to choose a file </span>
                                     </div>
-                                    <span className='text-sm'>Drag and drop or browse to choose a file </span>
-                                </div>
                                 )}
-                                
+
                             </div>
                         </div>
 
@@ -319,8 +332,8 @@ const DetailVenue = () => {
                 <Layout
                     chose='container'>
                     <Carousel
-                        id='1'
-                        image={images}
+                        id='carosel'
+                        image={image}
                     />
                     <div className='grid w-full grid-cols-2 mb-10'>
                         <div className='mr-4'>
@@ -330,10 +343,10 @@ const DetailVenue = () => {
                         <div className='pl-5 mt-3'>
                             <div className='flex w-full '>
                                 <div className='w-4/5 text-4xl font-bold'>
-                                    {venue.name}
+                                    {venue.venue_name}
                                 </div>
                                 <div className='flex items-center justify-end w-1/5 gap-2 pr-5 text-xl font-bold text-yellow'>
-                                    <span className='text-black'>{venue.rating}</span>  <BsFillStarFill />
+                                    <span className='text-black'>{Math.round(venue.average_rating * 10) / 10}</span>  <BsFillStarFill />
                                 </div>
                             </div>
                             <div className='flex items-center gap-3 mt-5 text-xl font-semibold text-gray-500'>
@@ -350,7 +363,7 @@ const DetailVenue = () => {
 
                             </div>
 
-                            {user === "user" ?
+                            {user_id != idUser ?
                                 <div className='w-full p-2 mt-10'>
                                     <button className='w-full h-12 font-semibold text-white bg-primary rounded-xl'>
                                         Check Availability
@@ -368,7 +381,7 @@ const DetailVenue = () => {
                                             <BsFillPlusCircleFill />
                                         </label>
                                         <label htmlFor="modal-delete-venue" className="flex items-center justify-center h-12 gap-3 font-semibold text-white bg-red-500 btn btn-ghost hover:text-black rounded-xl"
-                                        onClick={DeleteVenue}
+                                            onClick={DeleteVenue}
                                         >
                                             Delete
                                             <BsFillTrash3Fill />
@@ -382,13 +395,13 @@ const DetailVenue = () => {
                     </div>
 
 
-                    <div className={`${user === "user" ? "" : "hidden"}`}>
+                    <div className={`${user_id != idUser ? "" : "hidden"}`}>
 
                         <div className={`m-5`}>
                             <span className='text-3xl font-bold'>Review & Ratings</span>
                             <div className='flex items-center gap-4'>
                                 <div className='text-5xl font-bold'>
-                                    {venue.average_rating}
+                                    {Math.round(venue.average_rating * 10) / 10}
                                 </div>
                                 <div className='mt-3'>
                                     <div className='flex gap-2 text-2xl text-yellow'>

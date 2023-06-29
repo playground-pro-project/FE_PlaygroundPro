@@ -88,10 +88,10 @@ const Api = {
     }),
 
 
-  GetVenue: (): AxiosPromise<GetVenues[]> =>
+  GetVenue: (page: number): AxiosPromise<GetVenues[]> =>
     instance({
       method: 'GET',
-      url: '/venues',
+      url: `/venues?page=${page}`,
     }),
 
   GetVenueById: (id: string | null, token: string | null): AxiosPromise<GetVenuesById> =>
