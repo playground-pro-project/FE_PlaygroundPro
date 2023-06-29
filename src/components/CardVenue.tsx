@@ -35,10 +35,10 @@ const CardVenue: FC<CardVenue> = ({ Image, Place, Range, Name, Rating, Price, Id
                     <img className="object-cover h-full rounded-t-md" src={Image} alt="Image Cover" />
                 </div>
 
-                <div className='absolute bottom-0 w-full h-32 p-2 bg-white rounded-t-xl rounded-b-md'>
+                <div className='absolute bottom-0 w-full h-40 p-2 bg-white min-h-max rounded-t-xl rounded-b-md'>
                     <div className="ml-3 mr-3">
                         <div className='flex justify-between '>
-                            <div className="flex items-center gap-2 text-gray-400"><BsFillGeoAltFill /> {Place}<div className="text-xs font-bold text-white badge badge-warning">{Range} Km</div></div>
+                            <div className="flex items-center gap-2 text-gray-400"><BsFillGeoAltFill /> {Place}<div className="text-xs font-bold text-white badge badge-warning">{Range}Km</div></div>
                             <div className="flex items-center gap-1 font-bold">{Rating}<span className="text-warning"><BsFillStarFill /></span></div>
                         </div>
                         <p className="mt-3 text-xl font-bold">{Name}</p>

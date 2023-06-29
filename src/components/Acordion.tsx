@@ -19,7 +19,6 @@ export const Acordion: FC<AcordionProps> = ({ name, content, image, rating }) =>
             setImage(image);
         }
     }, [image]);
-    console.log(Image)
 
     const stars = [];
     for (let i = 0; i < rating; i++) {
@@ -28,18 +27,18 @@ export const Acordion: FC<AcordionProps> = ({ name, content, image, rating }) =>
 
     return (
         <>
-            <div className="collapse collapse-arrow bg-base-200 mb-4">
+            <div className="mb-4 collapse collapse-arrow bg-base-200">
                 <input type="radio" name="my-accordion-2" />
-                <div className="collapse-title text-xl font-medium flex items-center gap-2">
+                <div className="flex items-center gap-2 text-xl font-medium collapse-title">
                     <div>
                         <div className="avatar">
-                            <div className="w-12 rounded-full mt-1">
+                            <div className="w-12 mt-1 rounded-full">
                                 <img src={Image} />
                             </div>
                         </div>
                     </div>
                     <div>
-                        <span className='text-md font-bold'>{name}</span>
+                        <span className='font-bold text-md'>{name}</span>
                         <div className='flex gap-2 text-md text-yellow'>
                             {stars}
                         </div>
