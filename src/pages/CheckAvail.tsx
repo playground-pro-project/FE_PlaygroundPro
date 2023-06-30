@@ -9,8 +9,6 @@ import {
   Textarea,
   Switch,
   Datepicker,
-  SegmentedGroup,
-  SegmentedItem,
   MbscCalendarEvent,
   MbscEventcalendarView,
 } from "@mobiscroll/react";
@@ -26,9 +24,9 @@ setOptions({
 const defaultEvents = [
   {
     id: 1,
-    start: "2021-11-08T13:00",
-    end: "2021-11-08T13:45",
-    title: "Lunch @ Butcher's",
+    start: "2023-06-25T13:00",
+    end: "2023-06-25T14:00",
+    title: "Booked",
     description: "",
     allDay: false,
     free: true,
@@ -36,9 +34,9 @@ const defaultEvents = [
   },
   {
     id: 2,
-    start: "2021-11-18T15:00",
-    end: "2021-11-18T16:00",
-    title: "General orientation",
+    start: "2023-06-25T15:00",
+    end: "2023-06-25T16:00",
+    title: "Orang Sanjaya",
     description: "",
     allDay: false,
     free: false,
@@ -46,9 +44,9 @@ const defaultEvents = [
   },
   {
     id: 3,
-    start: "2021-11-17T18:00",
-    end: "2021-11-17T22:00",
-    title: "Dexter BD",
+    start: "2023-06-26T13:00",
+    end: "2023-06-26T14:00",
+    title: "Orang Senayan",
     description: "",
     allDay: false,
     free: true,
@@ -56,9 +54,9 @@ const defaultEvents = [
   },
   {
     id: 4,
-    start: "2021-11-19T10:30",
-    end: "2021-11-19T11:30",
-    title: "Stakeholder mtg.",
+    start: "2023-06-27T13:00",
+    end: "2023-06-27T14:00",
+    title: "Orang Malang",
     description: "",
     allDay: false,
     free: false,
@@ -185,7 +183,7 @@ const CheckAvail: React.FC = () => {
             },
             text: "Undo",
           },
-          message: "Event deleted",
+          message: "Booking Canceled",
         });
       });
     },
@@ -217,10 +215,6 @@ const CheckAvail: React.FC = () => {
 
   const dateChange = React.useCallback<any>((args: any) => {
     setDate(args.value);
-  }, []);
-
-  const statusChange = React.useCallback<any>((ev: any) => {
-    setStatus(ev.target.value);
   }, []);
 
   const onDeleteClick = React.useCallback<any>(() => {
@@ -277,7 +271,7 @@ const CheckAvail: React.FC = () => {
     [popupEventAllDay]
   );
   const headerText = React.useMemo<string>(
-    () => (isEdit ? "Edit event" : "New Event"),
+    () => (isEdit ? "Edit Booking" : "Booking"),
     [isEdit]
   );
   const respSetting = React.useMemo<any>(
@@ -336,15 +330,6 @@ const CheckAvail: React.FC = () => {
   const selectColor = React.useCallback((color: any) => {
     setTempColor(color);
   }, []);
-
-  const openColorPicker = React.useCallback(
-    (ev: any) => {
-      selectColor(selectedColor || "");
-      setColorAnchor(ev.currentTarget);
-      setColorPickerOpen(true);
-    },
-    [selectColor, selectedColor]
-  );
 
   const changeColor = React.useCallback(
     (ev: any) => {
@@ -422,29 +407,6 @@ const CheckAvail: React.FC = () => {
                 onChange={dateChange}
                 value={popupEventDate}
               />
-              <div onClick={openColorPicker} className="event-color-c">
-                <div className="event-color-label">Color</div>
-                <div>
-                  <div
-                    className="event-color"
-                    style={{ background: selectedColor }}
-                  ></div>
-                </div>
-              </div>
-              <SegmentedGroup onChange={statusChange}>
-                <SegmentedItem
-                  value="busy"
-                  checked={popupEventStatus === "busy"}
-                >
-                  Show as busy
-                </SegmentedItem>
-                <SegmentedItem
-                  value="free"
-                  checked={popupEventStatus === "free"}
-                >
-                  Show as free
-                </SegmentedItem>
-              </SegmentedGroup>
               {isEdit && (
                 <div className="mbsc-button-group">
                   <Button
@@ -453,7 +415,7 @@ const CheckAvail: React.FC = () => {
                     variant="outline"
                     onClick={onDeleteClick}
                   >
-                    Delete event
+                    Cancel
                   </Button>
                 </div>
               )}
