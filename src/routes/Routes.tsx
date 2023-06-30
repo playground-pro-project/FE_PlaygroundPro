@@ -7,7 +7,8 @@ import { LoginResponse,
    GetVenues, 
    GetVenuesById, 
    GetReview, 
-   EditVenueResponse } from './Utils'
+   EditVenueResponse, 
+   } from './Utils'
 
 const instance = axios.create({
   baseURL: 'https://peterzalai.biz.id/',
@@ -104,10 +105,30 @@ const Api = {
 
     }),
 
-  DeleteVenueById: (id: string | null, token: string | null): AxiosPromise<GetVenuesById> =>
+  DeleteVenueById: (token: string | null, id: string | null, ): AxiosPromise<GetVenuesById> =>
     instance({
       method: 'DELETE',
       url: `/venues/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+
+    }),
+
+  DeleteImageVenueById: (token: string | null, id_venue: string | null, id_image: string | null): AxiosPromise<any> =>
+    instance({
+      method: 'DELETE',
+      url: `/venues/${id_venue}/images/${id_image}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+
+    }),
+    
+  GetImageVenuebyId: (id: string | null, token: string | null): AxiosPromise<any> =>
+    instance({
+      method: 'GET',
+      url: `/venues/${id}/images`,
       headers: {
         Authorization: `Bearer ${token}`,
       },

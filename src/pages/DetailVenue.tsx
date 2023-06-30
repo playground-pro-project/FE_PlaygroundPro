@@ -20,6 +20,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const schema = Yup.object({
     name: Yup.string(),
@@ -35,9 +36,11 @@ const DetailVenue = () => {
     const [venue, setVenue] = useState<any>("")
     const [review, setReview] = useState<any>([]);
     const [image, setImage] = useState<any>([]);
+    const [data, setData] = useState<boolean>(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [selectedFile, setSelectedFile] = useState<any>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -46,8 +49,7 @@ const DetailVenue = () => {
                 const response = await Api.GetVenueById(idVenue, token);
                 setVenue(response.data?.data)
                 setUserId(response.data?.data.user_id)
-                setImage(response.data?.data.venue_pictures)
-
+              
             } catch (error) {
                 console.error(error)
             }
@@ -61,25 +63,24 @@ const DetailVenue = () => {
                 console.error(error)
             }
         }
+        const fetchImage = async () => {
+            try {
+                const response = await Api.GetImageVenuebyId(idVenue, token);
+                
+                setImage(response.data.data)
 
-        // const FetchImage = () => {
-        //     const urls = image.map((item: any) => (item.venue_picture_url));
-        // setImage(urls);
-        // }
+            } catch (error) {
+                console.error(error)
+            }
+        }
 
         fetchVenue();
         fetchReview();
+        fetchImage();
+      
 
-    }, []);
-
-    useEffect(() => {
-        
-        
-    }, [])
-    
-    console.log(image.map((item: any) => (item.venue_picture_url)))
+    }, [data]);
  
-
 
     const formik = useFormik({
         initialValues: {
@@ -101,15 +102,19 @@ const DetailVenue = () => {
         const { name, description, location, price } = formik.values;
 
         try {
-            const response = await Api.EditVenue(token, idVenue, name, description, location, price)
-            console.log(response)
+            await Api.EditVenue(token, idVenue, name, description, location, price)
+            Swal.fire(
+                'Edit Venue',
+                'Edit Venue Success',
+                'success'
+            )  
         }
         catch (error) {
             console.error(error)
         }
         finally {
             formik.resetForm();
-
+            setData(!data)
         }
     }
 
@@ -137,28 +142,23 @@ const DetailVenue = () => {
 
     const handleUpload = async () => {
         const formData = new FormData();
-        formData.append('images', selectedFile);
+        formData.append('files', selectedFile);
 
         try {
 
-            const response = await axios.post(`https://peterzalai.biz.id/venues${idVenue}/images`, formData, {
+             await axios.post(`https://peterzalai.biz.id/venues/${idVenue}/images`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,
                 }
             });
-
-            console.log(response.data)
-
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Upgrade Acount Success',
+                title: 'Upload Image Success',
                 showConfirmButton: false,
                 timer: 1800
             })
-
-
 
         } catch (error) {
             console.log(error);
@@ -168,6 +168,9 @@ const DetailVenue = () => {
                 text: "Gagal Upload Image",
             });
         } finally {
+            setData(!data)
+            setSelectedFile(null)
+            setPreviewUrl(null)
 
         }
     };
@@ -201,34 +204,31 @@ const DetailVenue = () => {
             confirmButtonText: 'Yes, Delete'
         }).then((result) => {
             if (result.isConfirmed) {
-                HandleDelete()
-
-
+                HandleDelete()  
             }
         })
     }
 
     const HandleDelete = async () => {
-
         try {
-            const response = await Api.DeleteVenueById(token, idVenue)
-            console.log(response)
+            await Api.DeleteVenueById(token, idVenue)
             Swal.fire(
-                'Log Out',
+                'Delete Venue',
                 'Delete Venue Success',
                 'success'
             )
+            navigate("/")
         }
         catch (error) {
             console.error(error)
+            Swal.fire(
+                'Delete Venue',
+                'Delete Venue Eror',
+                'warning'
+            )
         }
-        finally {
-
-        }
+       
     }
-
-console.log(image)
-
 
     return (
         <>
@@ -332,7 +332,7 @@ console.log(image)
                 <Layout
                     chose='container'>
                     <Carousel
-                        id='carosel'
+                        id_user={user_id}
                         image={image}
                     />
                     <div className='grid w-full grid-cols-2 mb-10'>
@@ -346,14 +346,14 @@ console.log(image)
                                     {venue.venue_name}
                                 </div>
                                 <div className='flex items-center justify-end w-1/5 gap-2 pr-5 text-xl font-bold text-yellow'>
-                                    <span className='text-black'>{Math.round(venue.average_rating * 10) / 10}</span>  <BsFillStarFill />
+                                    <span className='text-black'>{venue.average_rating === undefined? "0" : Math.round(venue.average_rating * 10) / 10}</span>  <BsFillStarFill />
                                 </div>
                             </div>
                             <div className='flex items-center gap-3 mt-5 text-xl font-semibold text-gray-500'>
                                 <BsFillGeoAltFill />{venue.location}a <span className='text-white badge bg-oren'>10 Km </span>
                             </div>
                             <div className='mt-5 text-4xl font-bold text-oren'>
-                                Rp.{venue.price} / malam
+                                Rp.{venue.price},- / Hour
                             </div>
 
                             <div className='w-full pr-5 mt-5'>

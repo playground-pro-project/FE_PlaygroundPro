@@ -30,7 +30,10 @@ const CardVenue: FC<CardVenue> = ({ Image, Place, Range, Name, Rating, Price, Id
 
     return (
         <>
-            <div className='relative transition duration-500 ease-in-out bg-gray-800 rounded-md shadow-xl w-80 h-96 hover:scale-105 hover:cursor-pointer' id={IdVenue} onClick={HandleClik}>
+            <div 
+            className='relative transition duration-500 ease-in-out bg-gray-800 rounded-md shadow-xl w-80 h-96 hover:scale-105 hover:cursor-pointer' 
+            id={IdVenue} 
+            onClick={HandleClik}>
                 <div className='w-full h-3/4'>
                     <img className="object-cover h-full rounded-t-md" src={Image} alt="Image Cover" />
                 </div>
