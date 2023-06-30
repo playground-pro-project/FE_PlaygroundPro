@@ -9,13 +9,17 @@ import { GetProfil } from "../routes/Utils";
 import Loading from "../components/Loading";
 import { Input } from "../components/Input";
 import { Modals } from "../components/Modal";
-import { BsFillCloudArrowUpFill, BsFillPlusCircleFill } from "react-icons/bs";
+import {
+  BsFillCloudArrowUpFill,
+  BsFillPlusCircleFill,
+  BsFillTrash3Fill,
+} from "react-icons/bs";
 
 const Profile = () => {
   const [dataProfile, setDataProfile] = useState<GetProfil>();
   const [load, setLoad] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { token } = useStore();
+  const { token, setPP } = useStore();
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -26,11 +30,10 @@ const Profile = () => {
       .then((response) => {
         const { data } = response.data;
         setDataProfile(data);
-        console.log(data);
+        setPP(response.data?.profile_picture);
       })
       .catch((error) => {
-        const { data } = error.response;
-        console.log(data);
+        console.log(error);
       })
       .finally(() => setLoad(false));
   };
@@ -73,6 +76,32 @@ const Profile = () => {
     }
   };
 
+  const DeletePict = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        HandleDelete();
+      }
+    });
+  };
+
+  const HandleDelete = async () => {
+    try {
+      const response = await Api.deleteImageProfile(token);
+      console.log(response);
+      Swal.fire("Log Out", "Delete Venue Success", "success");
+    } catch (error) {
+      console.error(error);
+    } finally {
+    }
+  };
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -156,8 +185,8 @@ const Profile = () => {
               <div className="flex flex-col justify-center items-center pb-5">
                 <form className="flex flex-col mb-20 pt-10">
                   <div className="flex w-full">
-                    <div className="flex flex-col w-3/6 m-3 justify-center items-center">
-                      <div className="card w-fit h-fit pb-5">
+                    <div className="flex flex-col w-1/2 justify-center items-start">
+                      <div className="card pb-5">
                         <div className="p-1 bg-slate-300 rounded-full">
                           <img
                             src={dataProfile?.profile_picture || "no image"}
@@ -166,13 +195,22 @@ const Profile = () => {
                           />
                         </div>
                       </div>
-                      <div className="mt-0 modal-action ">
+                      <div className="mt-0 modal-action flex flex-col">
+                        <div className="mx-5"></div>
                         <label
                           htmlFor="modal-add-image"
-                          className="flex items-center justify-center h-12 gap-3 font-semibold text-white btn btn-ghost hover:text-black bg-warning rounded-xl"
+                          className="flex items-center justify-center h-12 gap-3 font-semibold text-white btn btn-ghost hover:text-black bg-primary rounded-xl"
                         >
                           Add Image
                           <BsFillPlusCircleFill />
+                        </label>
+                        <label
+                          htmlFor="modal-remove-image"
+                          className="flex items-center justify-center h-12 gap-3 font-semibold text-white btn btn-ghost hover:text-black bg-error rounded-xl"
+                          onClick={DeletePict}
+                        >
+                          Remove Image
+                          <BsFillTrash3Fill />
                         </label>
                       </div>
                     </div>

@@ -166,6 +166,7 @@ const Api = {
       url: `/users`,
       headers: {
         Authorization: `Bearer ${token}`,
+        "Access-Control-Allow-Origin": "*",
       },
     }),
   putImageProfile: (token: string | null, data?: any) =>
@@ -173,6 +174,15 @@ const Api = {
       method: "PUT",
       url: `/users/profile-picture`,
       data: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Access-Control-Allow-Origin": true,
+      },
+    }),
+  deleteImageProfile: (token: string | null) =>
+    instance({
+      method: "DELETE",
+      url: `/users/profile-picture`,
       headers: {
         Authorization: `Bearer ${token}`,
         "Access-Control-Allow-Origin": true,
