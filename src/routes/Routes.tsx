@@ -125,7 +125,7 @@ const Api = {
 
     }),
     
-  GetImageVenuebyId: (id: string | null, token: string | null): AxiosPromise<FetchImageVenue[]> =>
+  GetImageVenuebyId: (id: string | null, token: string | null): AxiosPromise<any> =>
     instance({
       method: 'GET',
       url: `/venues/${id}/images`,

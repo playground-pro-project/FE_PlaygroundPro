@@ -66,14 +66,14 @@ export const Carousel: FC<CarouselProps> = ({ image, id_user }) => {
         slidesToScroll: 1
     };
 
-
+console.log(image)
     return (
         <>
             <div className="w-full h-[500px] mb-5 ">
 
 
                 <Slider {...settings}>
-                    {image?.data?.map((item: any) => (
+                    {image?.map((item: any) => (
 
                         <div className='relative'>
                             <img

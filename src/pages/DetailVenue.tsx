@@ -67,7 +67,7 @@ const DetailVenue = () => {
             try {
                 const response = await Api.GetImageVenuebyId(idVenue, token);
                 
-                setImage(response.data)
+                setImage(response.data.data)
 
             } catch (error) {
                 console.error(error)
@@ -107,9 +107,7 @@ const DetailVenue = () => {
                 'Edit Venue',
                 'Edit Venue Success',
                 'success'
-            )
-          
-            
+            )  
         }
         catch (error) {
             console.error(error)

@@ -46,10 +46,7 @@ export interface EditVenueResponse {
 
 }
 export interface FetchImageVenue {
-    data:{
-        venue_picture_id: string,
-        url: string
-    }
+    
 
 }
 
