@@ -11,7 +11,7 @@ import {
     BsStarHalf, BsStar
 } from "react-icons/bs";
 import { Acordion } from '../components/Acordion';
-import { Maps } from '../components/Maps';
+import Map  from '../components/Maps';
 import { Modals } from '../components/Modal';
 import { Input, TextArea } from '../components/Input';
 import { useStore } from '../routes/store/store';
@@ -34,9 +34,9 @@ const DetailVenue = () => {
     const { idVenue, token, idUser } = useStore();
     const [user_id, setUserId] = useState<string | null>("")
     const [venue, setVenue] = useState<any>("")
-    const [review, setReview] = useState<any>([]);
     const [image, setImage] = useState<any>([]);
     const [data, setData] = useState<boolean>(false);
+    const [review, setReview] = useState<any>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [selectedFile, setSelectedFile] = useState<any>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -117,10 +117,6 @@ const DetailVenue = () => {
             setData(!data)
         }
     }
-
-
-    const latitude = -7.3804308; // Contoh nilai latitude
-    const longitude = 109.3664238; // Contoh nilai longitude
 
     const stars = [];
     for (let i = 0; i < venue.average_rating; i++) {
@@ -230,6 +226,12 @@ const DetailVenue = () => {
        
     }
 
+   
+
+
+    const latitude = -7.3804308; // Contoh nilai latitude
+    const longitude = 109.3664238; // Contoh nilai longitude
+   
     return (
         <>
             <Layout
@@ -335,9 +337,10 @@ const DetailVenue = () => {
                         id_user={user_id}
                         image={image}
                     />
-                    <div className='grid w-full grid-cols-2 mb-10'>
-                        <div className='mr-4'>
-                            <Maps latitude={latitude} longitude={longitude} />
+                    <div className='grid w-full grid-cols-2 gap-3 mb-10'>
+                        <div className='w-full m-4 h-max'>
+                        <Map latitude={latitude} longitude={longitude} />
+                       
 
                         </div>
                         <div className='pl-5 mt-3'>

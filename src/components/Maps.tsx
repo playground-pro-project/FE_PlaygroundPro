@@ -1,31 +1,45 @@
-import React from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import React, { useEffect, useRef } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 interface MapProps {
     latitude: number;
     longitude: number;
 }
 
-export const Maps: React.FC<MapProps> = ({ latitude, longitude }) => {
-    const center = {
-        lat: latitude,
-        lng: longitude
-    };
-    const apiKey = "AIzaSyDGoIhBub8GFk2y3vdZxSpmOwx971y7RCM";
+const Map: React.FC<MapProps> = ({ latitude, longitude }) => {
+    const mapRef = useRef<HTMLDivElement>(null);
+    let map: L.Map;
 
-    return (
-        <>
-            <LoadScript googleMapsApiKey={apiKey}>
-                <GoogleMap
-                    mapContainerClassName='m-4 w-full h-full'
-                    center={center}
-                    zoom={10}
-                >
-                    <Marker position={center} />
-                </GoogleMap>
-            </LoadScript>
+    useEffect(() => {
+        if (mapRef.current) {
+            map = L.map(mapRef.current).setView([latitude, longitude], 13);
 
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+            }).addTo(map);
 
-        </>
-    )
-}
+            const marker = L.marker([latitude, longitude]).addTo(map);
+            marker.bindPopup('Lokasi').openPopup();
+
+            // Contoh menambahkan event click pada peta
+            // Contoh menambahkan event click pada peta
+            const handleMapClick = (e: L.LeafletMouseEvent) => {
+                const { lat, lng } = e.latlng;
+                console.log(`Clicked at: ${lat}, ${lng}`);
+            };
+
+            map.on('click', handleMapClick);
+        }
+
+        return () => {
+            if (map) {
+                map.remove();
+            }
+        };
+    }, [latitude, longitude]);
+
+    return <div id="map" style={{ height: '400px' }} ref={mapRef}></div>;
+};
+
+export default Map;
