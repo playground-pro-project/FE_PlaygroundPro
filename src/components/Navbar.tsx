@@ -9,8 +9,8 @@ import LocationComponent from './Geolocation'
 export const Navbar = () => {
   const navigate = useNavigate();
   const [Login, setLogin] = useState(true);
-  const { token, role } = useStore();
-  const { removeToken } = useStore();
+  const { token, role, removeToken , removeIdUser, removePassword, removeIdVenue, removeEmail, removeRole} = useStore();
+  
 
   useEffect(() => {
     if (token && typeof token === 'string') {
@@ -37,6 +37,12 @@ export const Navbar = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         removeToken();
+        removeIdUser();
+        removeIdUser();
+        removePassword();
+        removeIdVenue();
+        removeEmail();
+        removeRole();
         Swal.fire(
           'Log Out',
           'logout Success',
@@ -69,7 +75,7 @@ export const Navbar = () => {
           <div className="dropdown dropdown-end ">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full" id='avatar'>
-                <img  src="https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg" />
+                <img  src="https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png" />
               </div>
             </label>
             <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">

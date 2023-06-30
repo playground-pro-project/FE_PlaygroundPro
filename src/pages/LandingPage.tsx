@@ -9,13 +9,13 @@ import Api from '../routes/Routes';
 const LandingPage = () => {
     const [venue, setVenue] = useState<any>([]);
     const [page, setPage] = useState<number>(1)
-   
+   const limit: number = 10;
 
     useEffect(() => {
       
         const fetchVenue = async () => {
             try {
-                const response = await Api.GetVenue(page);
+                const response = await Api.GetVenue(page, limit);
                 setVenue(response.data)
                 
 
