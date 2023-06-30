@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, ChangeEvent } from 'react';
 import Layout from '../components/Layout'
 import { Carousel } from '../components/Carousel'
 import {
@@ -7,29 +7,228 @@ import {
     BsFillTrash3Fill,
     BsFillPlusCircleFill,
     BsFillPencilFill,
-    BsFillCloudArrowUpFill
+    BsFillCloudArrowUpFill,
+    BsStarHalf, BsStar
 } from "react-icons/bs";
 import { Acordion } from '../components/Acordion';
 import { Maps } from '../components/Maps';
 import { Modals } from '../components/Modal';
-import { Input } from '../components/Input';
+import { Input, TextArea } from '../components/Input';
+import { useStore } from '../routes/store/store';
+import Api from '../routes/Routes';
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import Swal from 'sweetalert2';
+import axios from 'axios';
+
+const schema = Yup.object({
+    name: Yup.string(),
+    description: Yup.string(),
+    location: Yup.string(),
+    price: Yup.number(),
+
+});
 
 const DetailVenue = () => {
+    const { idVenue, token, idUser } = useStore();
+    const [user_id, setUserId] = useState<string | null>("")
+    const [venue, setVenue] = useState<any>("")
+    const [review, setReview] = useState<any>([]);
+    const [image, setImage] = useState<any>([]);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [selectedFile, setSelectedFile] = useState<any>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-    const images: string[] = [
-        'https://www.ahlilapangantenis.com/wp-content/uploads/2019/07/Cara-Merawat-Lapangan-Basket-sebelum-Renovasi-Dilakukan.jpg',
-        'https://www.jasapembuatanlapangan.id/wp-content/uploads/2022/02/rencana-anggaran-biaya-pembuatan-lapangan-basket-fitur-image.png',
-        'https://blogger.googleusercontent.com/img/a/AVvXsEi9wOvkZra-yskxVfU0zlmFAZLqDcBkL340OTepI0v0tfAh8OWzN1AgRfU1F9VzhzQYms5N17SQaLIliv4KkZLjUjejIoQZmpv9f6rIqqj-3JBD03ifthcaXw8xlWH5GBBXd9yS0Npqql_cB0zhWPwME3F-WjcYu-NsBs77T4ILNsu2nKfg-GsOpGhC=w497-h373'
-    ];
-
-    const [user, setUser] = useState<string>("")
- 
     useEffect(() => {
-        setUser("owner")
+
+        const fetchVenue = async () => {
+            try {
+                const response = await Api.GetVenueById(idVenue, token);
+                setVenue(response.data?.data)
+                setUserId(response.data?.data.user_id)
+                setImage(response.data?.data.venue_pictures)
+
+            } catch (error) {
+                console.error(error)
+            }
+        };
+
+        const fetchReview = async () => {
+            try {
+                const response = await Api.GetReview(idVenue, token);
+                setReview(response.data)
+            } catch (error) {
+                console.error(error)
+            }
+        }
+
+        // const FetchImage = () => {
+        //     const urls = image.map((item: any) => (item.venue_picture_url));
+        // setImage(urls);
+        // }
+
+        fetchVenue();
+        fetchReview();
+
     }, []);
+
+    useEffect(() => {
+        
+        
+    }, [])
+    
+    console.log(image.map((item: any) => (item.venue_picture_url)))
+ 
+
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            description: '',
+            location: '',
+            price: 0,
+
+        },
+        validationSchema: schema,
+        onSubmit: (values) => {
+            console.log(values);
+        },
+
+    });
+
+
+    const HandleEdit = async () => {
+        const { name, description, location, price } = formik.values;
+
+        try {
+            const response = await Api.EditVenue(token, idVenue, name, description, location, price)
+            console.log(response)
+        }
+        catch (error) {
+            console.error(error)
+        }
+        finally {
+            formik.resetForm();
+
+        }
+    }
+
 
     const latitude = -7.3804308; // Contoh nilai latitude
     const longitude = 109.3664238; // Contoh nilai longitude
+
+    const stars = [];
+    for (let i = 0; i < venue.average_rating; i++) {
+        if (Number.isInteger(venue.average_rating) || i < Math.floor(venue.average_rating)) {
+            stars.push(<BsFillStarFill key={i} />);
+        }
+    }
+
+    if (!Number.isInteger(venue.average_rating)) {
+        stars.push(<BsStarHalf key={venue.average_rating} />);
+    }
+
+    for (let i = 5; i > venue.average_rating; i--) {
+        if (Number.isInteger(venue.average_rating) || i < Math.floor(venue.average_rating)) {
+            stars.push(<BsStar key={stars.length} />);
+        }
+
+    }
+
+    const handleUpload = async () => {
+        const formData = new FormData();
+        formData.append('images', selectedFile);
+
+        try {
+
+            const response = await axios.post(`https://peterzalai.biz.id/venues${idVenue}/images`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+
+            console.log(response.data)
+
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Upgrade Acount Success',
+                showConfirmButton: false,
+                timer: 1800
+            })
+
+
+
+        } catch (error) {
+            console.log(error);
+            Swal.fire({
+                icon: "error",
+                title: "Failed",
+                text: "Gagal Upload Image",
+            });
+        } finally {
+
+        }
+    };
+
+    const handleFileUpload = () => {
+
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+
+    };
+
+    const handleSelectedFile = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        setSelectedFile(file || null);
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setPreviewUrl(imageUrl);
+        }
+
+    };
+
+    const DeleteVenue = () => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Delete'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                HandleDelete()
+
+
+            }
+        })
+    }
+
+    const HandleDelete = async () => {
+
+        try {
+            const response = await Api.DeleteVenueById(token, idVenue)
+            console.log(response)
+            Swal.fire(
+                'Log Out',
+                'Delete Venue Success',
+                'success'
+            )
+        }
+        catch (error) {
+            console.error(error)
+        }
+        finally {
+
+        }
+    }
+
+console.log(image)
+
 
     return (
         <>
@@ -46,18 +245,34 @@ const DetailVenue = () => {
                             label="Venue Name"
                             name="name"
                             type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.name}
                         />
                         <Input
                             id="location"
                             label="Location"
                             name="location"
                             type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.location}
                         />
                         <Input
                             id="price"
                             label="Hourly Price"
                             name="price"
                             type="text"
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                formik.setFieldValue('price', parseInt(e.target.value, 10) || 0)
+                            }
+                            value={formik.values.price}
+                        />
+                        <TextArea
+                            id='description'
+                            label='Description'
+                            name='description'
+                            value={formik.values.description}
+                            onChange={formik.handleChange}
+
                         />
 
                     </div>
@@ -67,26 +282,34 @@ const DetailVenue = () => {
                                 Close
                             </label>
                         </div>
-                        <button className="w-32 text-white btn btn-primary">
-                            Submit
+                        <button className="w-32 text-white btn btn-primary" onClick={HandleEdit}>
+                            Save
                         </button>
                     </div>
 
                 </Modals>
 
                 <Modals id='modal-add-image'>
-                    <div className='w-full'>
+                    <div className='w-full '>
                         <div className='flex justify-center mb-5 text-xl font-bold text-darkBlue'>
                             Add Image
                         </div>
                         <div className='w-full'>
-                            <div className='flex flex-col items-center justify-center w-full border-2 border-gray-800 border-dashed rounded-xl h-52 bg-base-100'>
-                                <div className="text-center">
-                                    <div className='flex justify-center'>
-                                        <BsFillCloudArrowUpFill class='text-5xl' />
+                            <div className='flex flex-col items-center justify-center w-full border-2 border-gray-800 border-dashed rounded-xl h-52 bg-base-100 hover:cursor-pointer hover:animate-pulse'
+                                onClick={handleFileUpload}
+                            >
+                                <input type="file" className="hidden" onChange={handleSelectedFile} ref={fileInputRef} />
+                                {previewUrl ? (
+                                    <img src={previewUrl} alt="Preview" className="object-cover w-full h-full rounded-xl" />
+                                ) : (
+                                    <div className="text-center">
+                                        <div className='flex justify-center'>
+                                            <BsFillCloudArrowUpFill class='text-5xl' />
+                                        </div>
+                                        <span className='text-sm'>Drag and drop or browse to choose a file </span>
                                     </div>
-                                    <span className='text-sm'>Drag and drop or browse to choose a file </span>
-                                </div>
+                                )}
+
                             </div>
                         </div>
 
@@ -96,7 +319,7 @@ const DetailVenue = () => {
                                     Close
                                 </label>
                             </div>
-                            <button className="w-32 text-white btn btn-primary">
+                            <button className="w-32 text-white btn btn-primary" onClick={handleUpload}>
                                 Submit
                             </button>
 
@@ -105,12 +328,12 @@ const DetailVenue = () => {
                     </div>
 
                 </Modals>
-                \
+
                 <Layout
                     chose='container'>
                     <Carousel
-                        id='1'
-                        image={images}
+                        id='carosel'
+                        image={image}
                     />
                     <div className='grid w-full grid-cols-2 mb-10'>
                         <div className='mr-4'>
@@ -120,27 +343,27 @@ const DetailVenue = () => {
                         <div className='pl-5 mt-3'>
                             <div className='flex w-full '>
                                 <div className='w-4/5 text-4xl font-bold'>
-                                    lapangan setia budi
+                                    {venue.venue_name}
                                 </div>
                                 <div className='flex items-center justify-end w-1/5 gap-2 pr-5 text-xl font-bold text-yellow'>
-                                    <span className='text-black'>4,5</span>  <BsFillStarFill />
+                                    <span className='text-black'>{Math.round(venue.average_rating * 10) / 10}</span>  <BsFillStarFill />
                                 </div>
                             </div>
                             <div className='flex items-center gap-3 mt-5 text-xl font-semibold text-gray-500'>
-                                <BsFillGeoAltFill />Senayan Jakarta <span className='text-white badge bg-oren'>10 Km </span>
+                                <BsFillGeoAltFill />{venue.location}a <span className='text-white badge bg-oren'>10 Km </span>
                             </div>
                             <div className='mt-5 text-4xl font-bold text-oren'>
-                                Rp.120.000 / malam
+                                Rp.{venue.price} / malam
                             </div>
 
                             <div className='w-full pr-5 mt-5'>
                                 <p className='mr-5'>
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                    {venue.description}
                                 </p>
 
                             </div>
 
-                            {user === "default" ?
+                            {user_id != idUser ?
                                 <div className='w-full p-2 mt-10'>
                                     <button className='w-full h-12 font-semibold text-white bg-primary rounded-xl'>
                                         Check Availability
@@ -157,7 +380,9 @@ const DetailVenue = () => {
                                             Add Image
                                             <BsFillPlusCircleFill />
                                         </label>
-                                        <label htmlFor="modal-delete-venue" className="flex items-center justify-center h-12 gap-3 font-semibold text-white bg-red-500 btn btn-ghost hover:text-black rounded-xl">
+                                        <label htmlFor="modal-delete-venue" className="flex items-center justify-center h-12 gap-3 font-semibold text-white bg-red-500 btn btn-ghost hover:text-black rounded-xl"
+                                            onClick={DeleteVenue}
+                                        >
                                             Delete
                                             <BsFillTrash3Fill />
                                         </label>
@@ -170,21 +395,17 @@ const DetailVenue = () => {
                     </div>
 
 
-                    <div className={`${user === "default" ? "" : "hidden"}`}>
+                    <div className={`${user_id != idUser ? "" : "hidden"}`}>
 
                         <div className={`m-5`}>
                             <span className='text-3xl font-bold'>Review & Ratings</span>
                             <div className='flex items-center gap-4'>
                                 <div className='text-5xl font-bold'>
-                                    4,5
+                                    {Math.round(venue.average_rating * 10) / 10}
                                 </div>
                                 <div className='mt-3'>
                                     <div className='flex gap-2 text-2xl text-yellow'>
-                                        <BsFillStarFill />
-                                        <BsFillStarFill />
-                                        <BsFillStarFill />
-                                        <BsFillStarFill />
-                                        <BsFillStarFill />
+                                        {stars}
                                     </div>
                                     <span className='text-xl font-semibold'>Based on Review</span>
                                 </div>
@@ -193,48 +414,20 @@ const DetailVenue = () => {
 
                         <div className='m-5'>
                             <div className='w-full'>
-                                <Acordion
-                                    name='contoh'
-                                    content='ini hanya contoh'
-                                    rating={3}
-                                />
-                                <Acordion
-                                    name='contoh'
-                                    content='ini hanya contoh'
-                                    image='https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg'
-                                    rating={5}
-                                />
-                                <Acordion
-                                    name='contoh'
-                                    content='ini hanya contoh'
-                                    rating={4}
-                                />
-                                <Acordion
-                                    name='contoh'
-                                    content='ini hanya contoh'
-                                    image='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjRzkEEVtiPqqpsIeWxJzt-6pieZh0gl5wWncL3yQA1XDIZKWtEcYwAvp5qwbMnDWOAQI&usqp=CAU'
-                                    rating={1}
-                                />
-                                <Acordion
-                                    name='contoh'
-                                    content='ini hanya contoh'
-                                    rating={5}
-                                />
-
-
+                                {
+                                    review.data?.map((item: any) => (
+                                        <Acordion
+                                            name={item.user.fullname}
+                                            content={item.review}
+                                            rating={item.rating}
+                                        />
+                                    ))
+                                }
                             </div>
-
-
-
                         </div>
                     </div>
-
-
                 </Layout>
-
             </Layout>
-
-
         </>
     )
 }

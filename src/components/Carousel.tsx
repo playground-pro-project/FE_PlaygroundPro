@@ -1,11 +1,11 @@
-import { FC, useState, useEffect } from 'react'
+import { FC } from 'react'
 
 export interface CarouselProps {
     id: string,
     image: string[],
 
 }
-export const Carousel: FC<CarouselProps> = ({ id, image }) => {
+export const Carousel: FC<CarouselProps> = ({ image }) => {
     
     return (
         <>

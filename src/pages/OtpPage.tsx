@@ -5,11 +5,33 @@ import Logo from '../assets/logo-black.png'
 import Swal from 'sweetalert2';
 import { useStore } from '../routes/store/store';
 import Api from '../routes/Routes';
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+const schema = Yup.object({
+
+    otp_code: Yup.string()
+        .required('OTP is required')
+        .min(6, 'OTP must be at least 6 characters long')
+        .matches(/[0-9]/, 'OTP must contain at number'),
+
+});
 
 const OtpPage = () => {
-    const [progress, setProgress] = useState(60);
-    const [otp, setOtp] = useState("");
+    const [progress, setProgress] = useState(30);
     const [loading, setLoading] = useState<boolean>(false)
+    const { email, idUser, password } = useStore();
+    const { setToken, setIdUser, setEmail, setRole } = useStore();
+
+    const formik = useFormik({
+        initialValues: {
+            otp_code: "",
+        },
+        validationSchema: schema,
+        onSubmit: (values) => {
+            console.log(values);
+        },
+    });
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -25,36 +47,29 @@ const OtpPage = () => {
         return () => clearInterval(interval);
     }, []);
 
-    const { email, idUser } = useStore();
+
     const navigate = useNavigate();
 
-    const HandleResentOTP = () => {
-        setProgress(60)
-    }
-
-    const HandleRegister = async () => {
-        const user_id = idUser;
-        // if (!otp) {
-        //     Swal.fire({
-        //         icon: "error",
-        //         title: "Failed",
-        //         text: "Please check your Code OTP again!",
-        //     });
-        //     return;
-        // }
+    const HandleLogin = async () => {
         try {
 
             setLoading(true)
-            const response = await Api.ValidationOTP(user_id, otp)
-            console.log(response)
-            // setToken(response.data?.data?.token);
-            // setIdUser(response.data?.data?.user_id);
+            const response = await Api.Login(email, password);
+            setToken(response.data?.data?.token);
+            setIdUser(response.data?.data?.user_id);
+            setEmail(response.data?.data?.email);
+            setRole(response.data?.data?.role)
+            if (response.data?.data?.account_status === "unverified") {
+                navigate("/otp")
+            } else {
+                navigate("/")
+            }
 
-            navigate("/")
+
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'OTP Success',
+                title: 'Login Success',
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -66,6 +81,46 @@ const OtpPage = () => {
                 icon: "error",
                 title: "Failed",
                 text: "Please make sure your username and password are correct!",
+            });
+        } finally {
+            setLoading(false)
+        }
+
+    }
+    const HandleResentOTP = async () => {
+
+        try {
+            setLoading(true)
+            const response = await Api.ResendOTP(email)
+            console.log(response.data.message)
+        }
+        catch (error) {
+            console.error(error)
+        } finally {
+            setLoading(false)
+        }
+
+
+        setProgress(60)
+    }
+
+    const HandleOTP = async () => {
+        const { otp_code } = formik.values;
+        const user_id = idUser;
+        console.log(user_id)
+
+        try {
+            setLoading(true)
+            const response = await Api.ValidationOTP(user_id, otp_code)
+            console.log(response)
+            HandleLogin()
+
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                icon: "error",
+                title: "Failed",
+                text: "Gagal OTP",
             });
         } finally {
             setLoading(false)
@@ -95,15 +150,17 @@ const OtpPage = () => {
                                         type="text"
                                         placeholder="6 7 8 9 7 6"
                                         className="w-1/2 mb-5 text-3xl text-center bg-gray-100 input input-ghost"
-                                        pattern="[0-9]+"
-                                        title="Masukkan hanya angka"
+                                        id="otp_code"
+                                        name="otp_code"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.otp_code}
                                     />
 
                                 </div>
                             </div>
 
                             <div className='hover:cursor-pointer mt-5 w-full h-12 rounded-xl bg-gradient-to-r from-[#73A9E9] to-[#854A7A] flex justify-center items-center transition-colors duration-300 hover:bg-gradient-to-r hover:from-[#854A7A] hover:to-[#73A9E9]'
-                                onClick={HandleRegister}
+                                onClick={HandleOTP}
                             >
                                 {
                                     loading ? <span className="text-white loading loading-dots loading-lg"></span>
@@ -115,7 +172,7 @@ const OtpPage = () => {
                             <div className='flex items-center justify-center m-5'>
                                 <div className='flex items-center gap-2'>
                                     <span>didn't get code ?</span>
-                                    {progress == 0 ? <span className='w-24 h-12 font-bold text-white cursor-pointer btn btn-warning ' onClick={HandleResentOTP}> Resend OTP</span> :
+                                    {progress == 0 ? <span className='w-24 h-12 font-bold text-white cursor-pointer btn btn-warning ' onClick={HandleResentOTP}> {loading ? <span className="text-white loading loading-dots loading-lg"></span> : "Resend OTP" }</span> :
                                         <span className='font-semibold'> Resend OTP in {progress}</span>}
                                 </div>
 

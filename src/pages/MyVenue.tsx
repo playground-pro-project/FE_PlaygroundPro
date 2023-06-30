@@ -4,8 +4,62 @@ import CardVenue from '../components/CardVenue'
 import { Modals } from '../components/Modal'
 import { Input, TextArea, Select } from '../components/Input';
 import { BsFillCloudArrowUpFill } from "react-icons/bs";
+import Api from '../routes/Routes';
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import Swal from 'sweetalert2';
+import { useStore } from '../routes/store/store';
+
+const schema = Yup.object({
+  name: Yup.string(),
+  description: Yup.string(),
+  location: Yup.string(),
+  price: Yup.number(),
+  category: Yup.string()
+
+});
 
 const MyVenue = () => {
+  const { token } = useStore();
+
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      description: '',
+      location: '',
+      price: 0,
+      category: ''
+
+    },
+    validationSchema: schema,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+
+  });
+
+  const HandleAdd = async () => {
+    const { name, description, location, price, category } = formik.values;
+
+    try {
+      const response = await Api.AddVenue(token, name, description, location, price, category)
+      console.log(response)
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Add Venue Success',
+        showConfirmButton: false,
+        timer: 1800
+      })
+    }
+    catch (error) {
+      console.error(error)
+    }
+    finally {
+      formik.resetForm();
+    }
+  }
+
 
   return (
     <div>
@@ -26,11 +80,15 @@ const MyVenue = () => {
                   label="Venue Name"
                   name="name"
                   type="text"
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
                 />
                 <TextArea
                   id="description"
                   label="Description"
                   name="description"
+                  value={formik.values.description}
+                  onChange={formik.handleChange}
                 />
 
                 <div className='w-full'>
@@ -51,8 +109,16 @@ const MyVenue = () => {
                   label="Price"
                   name="price"
                   type="number"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    formik.setFieldValue('price', parseInt(e.target.value, 10) || 0)
+                  }
+                  value={formik.values.price}
                 />
-                <Select id="category" name="category" label="Category">
+                <Select id="category" name="category" label="Category"
+                  value={formik.values.category}
+                  defaultVal={'Category'}
+                  onChangeSelect={formik.handleChange}
+                >
                   <option value="sepak_bola" id="sepak_bola">
                     Sepak Bola
                   </option>
@@ -63,6 +129,14 @@ const MyVenue = () => {
                     Futsal
                   </option>
                 </Select>
+                <Input
+                  id="location"
+                  label="Location"
+                  name="location"
+                  type="text"
+                  value={formik.values.location}
+                  onChange={formik.handleChange}
+                />
 
               </div>
 
@@ -73,7 +147,7 @@ const MyVenue = () => {
                   Close
                 </label>
               </div>
-              <button className="w-32 text-white btn btn-primary">
+              <button className="w-32 text-white btn btn-primary" onClick={HandleAdd}>
                 Submit
               </button>
             </div>
@@ -100,12 +174,12 @@ const MyVenue = () => {
               </div>
             </div>
             <div className='w-full p-5 mt-10'>
-              <div className='flex justify-end w-full'>
+              <div className='flex justify-end w-full pr-32'>
                 <label
-                  className="w-32 mt-1 text-lg font-medium btn btn-primary text-neutral"
+                  className="w-32 mt-1 font-medium text-white btn btn-primary text-neutral"
                   htmlFor="my-venue"
                 >
-                  Review
+                  Add Venue
                 </label>
               </div>
               <div className='flex flex-wrap justify-center gap-5 p-5'>

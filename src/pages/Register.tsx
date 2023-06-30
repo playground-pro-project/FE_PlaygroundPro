@@ -30,7 +30,7 @@ const Register: React.FC = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState<boolean>(false)
-    const { setIdUser , setEmail} = useStore();
+    const { setIdUser , setEmail, setPassword} = useStore();
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -56,15 +56,18 @@ const Register: React.FC = () => {
             const response = await Api.Register(fullname, email, phone, password);
             setIdUser(response.data?.data?.user_id);
             setEmail(email)
-            navigate("/otp")
-
+            setPassword(password)
+            
+            
+            
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Login Success',
+                title: 'Register Success',
                 showConfirmButton: false,
                 timer: 1500
             })
+            navigate("/otp")
 
 
         } catch (error) {
@@ -182,7 +185,7 @@ const Register: React.FC = () => {
 
                             </div>
                            
-                            <button className='hover:cursor-pointer mt-5 w-full h-12 rounded-xl bg-gradient-to-r from-[#73A9E9] to-[#854A7A] flex justify-center items-center transition-colors duration-300 hover:bg-gradient-to-r hover:from-[#854A7A] hover:to-[#73A9E9]'
+                            <button id='btn-register' className='hover:cursor-pointer mt-5 w-full h-12 rounded-xl bg-gradient-to-r from-[#73A9E9] to-[#854A7A] flex justify-center items-center transition-colors duration-300 hover:bg-gradient-to-r hover:from-[#854A7A] hover:to-[#73A9E9]'
                                 onClick={HandleRegister}
                             >
                                 {
