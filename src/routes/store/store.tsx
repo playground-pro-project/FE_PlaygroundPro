@@ -25,6 +25,12 @@ interface StoreState {
     idVenue: string | null;
     setIdVenue: (idVenue: string | null) => void;
     removeIdVenue: () => void;
+    
+    // idImageVenye: string | null;
+    // setIdImageVenue: (idImageVenue: string | null) => void;
+    // removeIdImageVenue: () => void;
+
+    
 
 }
 
@@ -113,6 +119,7 @@ const store = create<StoreState>((set: SetState<StoreState>) => ({
         localStorage.removeItem('idVenue');
         set({ idVenue: null });
     },
+
 
 }));
 

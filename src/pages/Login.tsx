@@ -123,6 +123,7 @@ const Login: React.FC = () => {
                                 />
                                 <a
                                     type="button"
+                                    id='eyeIcon'
                                     className="absolute mt-4 text-xl text-gray-800 bottom-6 right-4"
                                     onClick={togglePasswordVisibility}
                                 >
