@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import L, { LatLngExpression, LeafletMouseEvent, Marker } from 'leaflet';
+import L, {LeafletMouseEvent } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 interface MapProps {

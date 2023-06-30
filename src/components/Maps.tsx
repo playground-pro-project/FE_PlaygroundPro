@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import L, { LatLngExpression, LeafletEvent } from 'leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 interface MapProps {
