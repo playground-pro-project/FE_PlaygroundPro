@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import { InputFile } from "../components/Input";
+import { useNavigate } from "react-router-dom";
 
 const Validate = () => {
+  const navigate = useNavigate();
   const [preview, setPreview] = useState<string | null>(null);
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files?.[0];
     if (file) {
       setPreview(URL.createObjectURL(file));
     }
+  };
+  const handleCancel = () => {
+    navigate("/profile");
   };
   return (
     <Layout chose="layout">
@@ -52,7 +57,10 @@ const Validate = () => {
           />
 
           <div className="w-full flex justify-end gap-3">
-            <button className="btn bg-gray-500 w-48 text-white rounded-lg">
+            <button
+              className="btn bg-gray-500 w-48 text-white rounded-lg"
+              onClick={handleCancel}
+            >
               Cancel
             </button>
             <button
