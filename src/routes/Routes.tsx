@@ -8,7 +8,7 @@ import { LoginResponse,
    GetVenuesById, 
    GetReview, 
    EditVenueResponse, 
-   FetchImageVenue} from './Utils'
+   } from './Utils'
 
 const instance = axios.create({
   baseURL: 'https://peterzalai.biz.id/',
