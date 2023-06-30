@@ -231,9 +231,7 @@ const DetailVenue = () => {
 
     const latitude = -7.3804308; // Contoh nilai latitude
     const longitude = 109.3664238; // Contoh nilai longitude
-    const handleMarkerClick = (latitude: number, longitude: number) => {
-        console.log('Marker clicked at:', latitude, longitude);
-      };
+   
     return (
         <>
             <Layout
@@ -342,7 +340,7 @@ const DetailVenue = () => {
                     <div className='grid w-full grid-cols-2 gap-3 mb-10'>
                         <div className='w-full m-4 h-max'>
                         <Map latitude={latitude} longitude={longitude} />
-                        {/* <Markers onMarkerClick={handleMarkerClick} /> */}
+                       
 
                         </div>
                         <div className='pl-5 mt-3'>
