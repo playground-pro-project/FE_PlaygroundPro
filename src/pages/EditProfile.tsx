@@ -16,29 +16,17 @@ const schema = Yup.object().shape({
   bio: Yup.string(),
 });
 const schemaPassword = Yup.object().shape({
-  old_password: Yup.string().required("Required"),
-  password: Yup.string().required("Required"),
+  new_password: Yup.string().required("Required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "password must match")
     .required("Required"),
 });
 
 const EditProfile = () => {
-  const {
-    token,
-    profile_picture,
-    removeToken,
-    removeAddress,
-    removeBio,
-    removeEmail,
-    removeFullname,
-    removeIdUser,
-    removePP,
-    removePassword,
-    removePhone,
-    removeRole,
-  } = useStore();
+  const { token, profile_picture, full_name, email, phone, address, bio } =
+    useStore();
   const navigate = useNavigate();
+
   const fetchProfile = async () => {
     await Api.getProfile(token)
       .then((response) => {
@@ -61,9 +49,7 @@ const EditProfile = () => {
   };
   const formikPassword = useFormik({
     initialValues: {
-      password: "",
-      old_password: "",
-      confirmPassword: "",
+      new_password: "",
     },
     validationSchema: schemaPassword,
     onSubmit: async (values) => {
@@ -135,53 +121,7 @@ const EditProfile = () => {
         });
       });
   };
-  const delClass = async () => {
-    await Api.delUser(token)
-      .then((response) => {
-        const { message } = response.data;
-        removeFullname();
-        removeEmail();
-        removePhone();
-        removeAddress();
-        removeBio();
-        removeAddress();
-        removeIdUser();
-        removeToken();
-        removeRole();
-        removePP();
-        removePassword();
-        navigate("/");
 
-        Swal.fire({
-          icon: "success",
-          title: message,
-        });
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Failed",
-          text: `error :  ${error.message}`,
-          showCancelButton: false,
-        });
-      });
-  };
-
-  const handleDelete = async () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Delete",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        delClass();
-      }
-    });
-  };
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -206,37 +146,21 @@ const EditProfile = () => {
               >
                 ✕
               </label>
-              <div className="w-full">
-                <label htmlFor="old_password" className="label">
-                  <p className="label-text">Old Password: </p>
-                </label>
-                <Input
-                  id="old_password"
-                  name="old_password"
-                  label="type your old password here"
-                  type="password"
-                  value={formikPassword.values.old_password}
-                  onChange={formikPassword.handleChange}
-                  onBlur={formikPassword.handleBlur}
-                  error={formikPassword.errors.old_password}
-                  touch={formikPassword.touched.old_password}
-                />
-              </div>
 
               <div className="w-full">
                 <label htmlFor="password" className="label">
                   <p className="label-text">New Password: </p>
                 </label>
                 <Input
-                  id="password"
-                  name="password"
+                  id="new_password"
+                  name="new_password"
                   label="type your new password here"
                   type="password"
-                  value={formikPassword.values.password}
+                  value={formikPassword.values.new_password}
                   onChange={formikPassword.handleChange}
                   onBlur={formikPassword.handleBlur}
-                  error={formikPassword.errors.password}
-                  touch={formikPassword.touched.password}
+                  error={formikPassword.errors.new_password}
+                  touch={formikPassword.touched.new_password}
                 />
               </div>
 
@@ -249,11 +173,8 @@ const EditProfile = () => {
                   name="confirmPassword"
                   label="type your confirm password here"
                   type="password"
-                  value={formikPassword.values.confirmPassword}
                   onChange={formikPassword.handleChange}
                   onBlur={formikPassword.handleBlur}
-                  error={formikPassword.errors.confirmPassword}
-                  touch={formikPassword.touched.confirmPassword}
                 />
               </div>
 
@@ -278,7 +199,7 @@ const EditProfile = () => {
             onSubmit={formik.handleSubmit}
           >
             <div className="flex w-full">
-              <div className="flex flex-col w-3/6 m-3 items-center">
+              <div className="flex flex-row w-3/6 m-3 items-center">
                 <div className="card w-fit h-fit pb-5">
                   <div className="p-1 bg-slate-300 rounded-full">
                     <img
@@ -297,7 +218,7 @@ const EditProfile = () => {
                   <Input
                     id="fullname"
                     name="fullname"
-                    label="type your name here"
+                    label={full_name || ""}
                     onChange={formik.handleChange}
                     value={formik.values.full_name}
                     onBlur={formik.handleBlur}
@@ -313,7 +234,7 @@ const EditProfile = () => {
                   <Input
                     id="email"
                     name="email"
-                    label="type your email here"
+                    label={email || ""}
                     onChange={formik.handleChange}
                     value={formik.values.email}
                     onBlur={formik.handleBlur}
@@ -329,7 +250,7 @@ const EditProfile = () => {
                   <Input
                     id="phone"
                     name="phone"
-                    label="type your phone here"
+                    label={phone || ""}
                     onChange={formik.handleChange}
                     value={formik.values.phone}
                     onBlur={formik.handleBlur}
@@ -345,7 +266,7 @@ const EditProfile = () => {
                   <Input
                     id="address"
                     name="address"
-                    label="type your address here"
+                    label={address || ""}
                     onChange={formik.handleChange}
                     value={formik.values.address}
                     onBlur={formik.handleBlur}
@@ -361,7 +282,7 @@ const EditProfile = () => {
                   <Input
                     id="bio"
                     name="bio"
-                    label="type your bio here"
+                    label={bio || ""}
                     onChange={formik.handleChange}
                     value={formik.values.bio}
                     onBlur={formik.handleBlur}
@@ -375,27 +296,22 @@ const EditProfile = () => {
 
             <div className="flex flex-row justify-end gap-5 mt-5">
               <button
-                className="btn btn-error text-white px-3 rounded-md text-center text-bold"
-                type="button"
-              >
-                Back
-              </button>
-              <button
                 type="submit"
                 className="btn btn-primary text-white px-3 py-2 rounded-md text-center text-bold"
               >
                 Save change
               </button>
+              <button
+                className="btn btn-error text-white px-3 rounded-md text-center text-bold"
+                type="button"
+                onClick={() => navigate("/profile")}
+              >
+                Back
+              </button>
             </div>
           </form>
 
           <div className="flex flex-row justify-center mb-20">
-            <div
-              className="btn btn-wide btn-error text-white mr-4"
-              onClick={handleDelete}
-            >
-              Delete Account
-            </div>
             <div className="">
               <label
                 className="btn btn-wide btn-primary text-white"
