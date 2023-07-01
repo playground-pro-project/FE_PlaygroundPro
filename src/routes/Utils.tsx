@@ -76,6 +76,7 @@ export interface GetVenues {
     distance: number;
     average_rating: number;
     pagination: number;
+    service_time: string;
   };
   pagination: {
     total_pages: number;

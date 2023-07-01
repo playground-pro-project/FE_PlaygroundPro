@@ -25,6 +25,15 @@ interface StoreState {
   setIdVenue: (idVenue: string | null) => void;
   removeIdVenue: () => void;
 
+  longitud: any | null;
+  setLong: (longitud: any | null) => void;
+  
+  latitud: any | null;
+  setLat: (latitud: any | null) => void;
+
+  city: any | null;
+  setCity: (latitud: any | null) => void;
+
   profile_picture: string | null;
   setPP: (profile_picture: string | null) => void;
   removePP: () => void;
@@ -48,6 +57,38 @@ interface StoreState {
 
 const store = create<StoreState>((set: SetState<StoreState>) => ({
   // ini fungsi untuk menyimpan , menampilkan & menghapus token ( token di simpan di local storage)
+  
+  city: localStorage.getItem("city"),
+  setCity: (city) => {
+    if (city) {
+      localStorage.setItem("city", city);
+    } else {
+      localStorage.removeItem("city");
+    }
+    set({ city });
+  },
+
+  longitud: localStorage.getItem("longitude"),
+  setLong: (longitud) => {
+    if (longitud) {
+      localStorage.setItem("longitud", longitud);
+    } else {
+      localStorage.removeItem("longitude");
+    }
+    set({ longitud });
+  },
+
+  latitud: localStorage.getItem("latitud"),
+  setLat: (latitud) => {
+    if (latitud) {
+      localStorage.setItem("latitud", latitud);
+    } else {
+      localStorage.removeItem("latitud");
+    }
+    set({ latitud });
+  },
+  
+
   token: localStorage.getItem("token"),
   setToken: (token) => {
     if (token) {

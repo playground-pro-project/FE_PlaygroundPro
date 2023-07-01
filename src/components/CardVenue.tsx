@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { BsFillGeoAltFill, BsFillStarFill } from "react-icons/bs";
 import { useStore } from '../routes/store/store';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 export interface CardVenue {
     Image?: string,
     Place?: string,
@@ -10,27 +10,34 @@ export interface CardVenue {
     Rating?: number,
     Price: number,
     IdVenue?: any,
-
+    
 }
 
 const CardVenue: FC<CardVenue> = ({ Image, Place, Range, Name, Rating, Price, IdVenue }) => {
     const navigate = useNavigate()
-    const { setIdVenue} = useStore();
+    const { setIdVenue, token } = useStore();
     const formatRupiah = (number: number): string => {
         return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
     };
 
     const formattedValue: string = formatRupiah(Price);
 
-    const HandleClik = () =>{
-        setIdVenue(IdVenue)
-        navigate("/detail")
+    const HandleClik = () => {
+        if (token && typeof token === 'string') {
+            setIdVenue(IdVenue)
+            navigate("/detail")
+        } else {
+            navigate("/login")
+        }
     }
 
 
     return (
         <>
-            <div className='relative transition duration-500 ease-in-out bg-gray-800 rounded-md shadow-xl w-80 h-96 hover:scale-105 hover:cursor-pointer' id={IdVenue} onClick={HandleClik}>
+            <div
+                className='relative transition duration-500 ease-in-out bg-gray-800 rounded-md shadow-xl w-80 h-96 hover:scale-105 hover:cursor-pointer'
+                id={IdVenue}
+                onClick={HandleClik}>
                 <div className='w-full h-3/4'>
                     <img className="object-cover h-full rounded-t-md" src={Image} alt="Image Cover" />
                 </div>
@@ -43,6 +50,7 @@ const CardVenue: FC<CardVenue> = ({ Image, Place, Range, Name, Rating, Price, Id
                         </div>
                         <p className="mt-3 text-xl font-bold">{Name}</p>
                         <p className="mt-2 text-2xl font-bold text-oren">{formattedValue} / Hour</p>
+                       
                     </div>
                 </div>
             </div>

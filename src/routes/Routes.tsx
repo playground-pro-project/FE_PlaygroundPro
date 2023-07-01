@@ -9,7 +9,7 @@ import {
   GetVenuesById,
   GetReview,
   EditVenueResponse,
-} from "./Utils";
+} from './Utils'
 
 const instance = axios.create({
   baseURL: "https://peterzalai.biz.id/",
@@ -86,10 +86,11 @@ const Api = {
       },
     }),
 
-  GetVenue: (page: number): AxiosPromise<GetVenues[]> =>
+
+  GetVenue: (page: number, limit: number, long: number, lat: number): AxiosPromise<GetVenues[]> =>
     instance({
-      method: "GET",
-      url: `/venues?page=${page}`,
+      method: 'GET',
+      url: `/venues?limit=${limit}&page=${page}&longitude=${long}&latitude=${lat}`,
     }),
 
   GetVenueById: (
@@ -104,10 +105,7 @@ const Api = {
       },
     }),
 
-  DeleteVenueById: (
-    id: string | null,
-    token: string | null
-  ): AxiosPromise<GetVenuesById> =>
+  DeleteVenueById: (token: string | null, id: string | null,): AxiosPromise<GetVenuesById> =>
     instance({
       method: "DELETE",
       url: `/venues/${id}`,
@@ -116,13 +114,34 @@ const Api = {
       },
     }),
 
+  DeleteImageVenueById: (token: string | null, id_venue: string | null, id_image: string | null): AxiosPromise<any> =>
+    instance({
+      method: 'DELETE',
+      url: `/venues/${id_venue}/images/${id_image}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+
+    }),
+
+  GetImageVenuebyId: (id: string | null, token: string | null): AxiosPromise<any> =>
+    instance({
+      method: 'GET',
+      url: `/venues/${id}/images`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+
+    }),
+
   EditVenue: (
     token: string | null,
     id_venue: string | null,
     name: string | null,
     description: string | null,
     location: string | null,
-    price: number | null
+    price: number | null,
+    service_time: string | null,
   ): AxiosPromise<EditVenueResponse> =>
     instance({
       method: "PUT",
@@ -135,31 +154,12 @@ const Api = {
         description,
         location,
         price,
+        service_time
       },
     }),
 
-  AddVenue: (
-    token: string | null,
-    name: string | null,
-    description: string | null,
-    location: string | null,
-    price: number | null,
-    category: string | null
-  ): AxiosPromise<EditVenueResponse> =>
-    instance({
-      method: "POST",
-      url: `/venues`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: {
-        name,
-        description,
-        location,
-        price,
-        category,
-      },
-    }),
+
+
   getProfile: (token: string | null) =>
     instance({
       method: "GET",

@@ -9,8 +9,7 @@ import LocationComponent from "./Geolocation";
 export const Navbar = () => {
   const navigate = useNavigate();
   const [Login, setLogin] = useState(true);
-  const { token, role, profile_picture } = useStore();
-  const { removeToken } = useStore();
+  const { profile_picture, token, role, removeToken , removeIdUser, removePassword, removeIdVenue, removeEmail, removeRole} = useStore();
 
   useEffect(() => {
     if (token && typeof token === "string") {
@@ -34,6 +33,17 @@ export const Navbar = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         removeToken();
+        removeIdUser();
+        removeIdUser();
+        removePassword();
+        removeIdVenue();
+        removeEmail();
+        removeRole();
+        Swal.fire(
+          'Log Out',
+          'logout Success',
+          'success'
+        )
         Swal.fire("Log Out", "logout Success", "success");
         navigate("/");
       }
@@ -72,13 +82,7 @@ export const Navbar = () => {
                 <div className="w-10 rounded-full">
                   <img
                     id="avatar"
-                    src={
-                      !profile_picture ||
-                      profile_picture === null ||
-                      profile_picture === undefined
-                        ? "https://placehold.co/40x40/png?text=I"
-                        : profile_picture
-                    }
+                    src={profile_picture || "https://pwco.com.sg/wp-content/uploads/2020/05/Generic-Profile-Placeholder-v3.png"}
                   />
                 </div>
               </label>
