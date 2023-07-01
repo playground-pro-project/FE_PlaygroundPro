@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef, ChangeEvent } from 'react';
-import Layout from '../components/Layout'
-import { Carousel } from '../components/Carousel'
+import { useState, useEffect, useRef, ChangeEvent } from "react";
+import Layout from "../components/Layout";
+import { Carousel } from "../components/Carousel";
 import {
     BsFillGeoAltFill,
     BsFillStarFill,
@@ -130,18 +130,56 @@ const DetailVenue = () => {
             stars.push(<BsFillStarFill key={i} />);
         }
     }
+  }
 
-    if (!Number.isInteger(venue.average_rating)) {
-        stars.push(<BsStarHalf key={venue.average_rating} />);
+  if (!Number.isInteger(venue.average_rating)) {
+    stars.push(<BsStarHalf key={venue.average_rating} />);
+  }
+
+  for (let i = 5; i > venue.average_rating; i--) {
+    if (
+      Number.isInteger(venue.average_rating) ||
+      i < Math.floor(venue.average_rating)
+    ) {
+      stars.push(<BsStar key={stars.length} />);
     }
+  }
 
-    for (let i = 5; i > venue.average_rating; i--) {
-        if (Number.isInteger(venue.average_rating) || i < Math.floor(venue.average_rating)) {
-            stars.push(<BsStar key={stars.length} />);
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append("images", selectedFile);
+
+    try {
+      const response = await axios.post(
+        `https://peterzalai.biz.id/venues${idVenue}/images`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
 
+      console.log(response.data);
+
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Upgrade Acount Success",
+        showConfirmButton: false,
+        timer: 1800,
+      });
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Gagal Upload Image",
+      });
+    } finally {
     }
-
+  };
     const handleUpload = async () => {
         const formData = new FormData();
         formData.append('files', selectedFile);
@@ -243,9 +281,37 @@ const DetailVenue = () => {
             <Layout
                 chose='layout'
             >
-                <Modals id='modal-edit-venue'>
-                    <div className='flex justify-center mb-5 text-xl font-bold text-darkBlue'>
-                        Edit Venue
+              Save
+            </button>
+          </div>
+        </Modals>
+
+        <Modals id="modal-add-image">
+          <div className="w-full ">
+            <div className="flex justify-center mb-5 text-xl font-bold text-darkBlue">
+              Add Image
+            </div>
+            <div className="w-full">
+              <div
+                className="flex flex-col items-center justify-center w-full border-2 border-gray-800 border-dashed rounded-xl h-52 bg-base-100 hover:cursor-pointer hover:animate-pulse"
+                onClick={handleFileUpload}
+              >
+                <input
+                  type="file"
+                  className="hidden"
+                  onChange={handleSelectedFile}
+                  ref={fileInputRef}
+                />
+                {previewUrl ? (
+                  <img
+                    src={previewUrl}
+                    alt="Preview"
+                    className="object-cover w-full h-full rounded-xl"
+                  />
+                ) : (
+                  <div className="text-center">
+                    <div className="flex justify-center">
+                      <BsFillCloudArrowUpFill class="text-5xl" />
                     </div>
                     <div className='w-full'>
                         <Input

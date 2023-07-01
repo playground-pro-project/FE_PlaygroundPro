@@ -188,5 +188,31 @@ const Api = {
         "Access-Control-Allow-Origin": true,
       },
     }),
+  editProfile: (token?: string | null, data?: any) =>
+    instance({
+      method: "PUT",
+      url: `/users`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: data,
+    }),
+  putPassword: (token?: string | null, data?: any) =>
+    instance({
+      method: "PUT",
+      url: `/users/password`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: data,
+    }),
+  delUser: (token?: string | null) =>
+    instance({
+      method: "DELETE",
+      url: `/users`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };
 export default Api;
