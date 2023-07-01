@@ -13,7 +13,7 @@ const Map: React.FC<MapProps> = ({ latitude, longitude }) => {
 
     useEffect(() => {
         if (mapRef.current) {
-            map = L.map(mapRef.current).setView([latitude, longitude], 13);
+            map = L.map(mapRef.current).setView([latitude, longitude], 17);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
@@ -22,8 +22,6 @@ const Map: React.FC<MapProps> = ({ latitude, longitude }) => {
             const marker = L.marker([latitude, longitude]).addTo(map);
             marker.bindPopup('Lokasi').openPopup();
 
-            // Contoh menambahkan event click pada peta
-            // Contoh menambahkan event click pada peta
             const handleMapClick = (e: L.LeafletMouseEvent) => {
                 const { lat, lng } = e.latlng;
                 console.log(`Clicked at: ${lat}, ${lng}`);

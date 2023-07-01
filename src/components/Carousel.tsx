@@ -66,6 +66,10 @@ export const Carousel: FC<CarouselProps> = ({ image, id_user }) => {
         slidesToScroll: 1
     };
 
+    const defaultImage = [
+        'https://www.eurovps.com/blog/wp-content/uploads/2012/10/placeholder-images.jpg'
+    ]
+
     return (
         <>
             <div className="w-full h-[500px] mb-5 ">
@@ -76,7 +80,7 @@ export const Carousel: FC<CarouselProps> = ({ image, id_user }) => {
 
                         <div className='relative'>
                             <img
-                               src={item.url || 'https://www.eurovps.com/blog/wp-content/uploads/2012/10/placeholder-images.jpg'}
+                               src={item.url || defaultImage}
                                 id={item.venue_picture_id}
                                 className='object-cover w-full h-[500px]'
                             />
