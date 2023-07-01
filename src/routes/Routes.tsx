@@ -188,5 +188,14 @@ const Api = {
         "Access-Control-Allow-Origin": true,
       },
     }),
+  editProfile: (token?: string | null, data?: any) =>
+    instance({
+      method: "PUT",
+      url: `/users`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: data,
+    }),
 };
 export default Api;

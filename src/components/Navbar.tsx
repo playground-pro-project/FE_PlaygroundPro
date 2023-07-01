@@ -9,7 +9,7 @@ import LocationComponent from "./Geolocation";
 export const Navbar = () => {
   const navigate = useNavigate();
   const [Login, setLogin] = useState(true);
-  const { token, role } = useStore();
+  const { token, role, profile_picture } = useStore();
   const { removeToken } = useStore();
 
   useEffect(() => {
@@ -72,7 +72,13 @@ export const Navbar = () => {
                 <div className="w-10 rounded-full">
                   <img
                     id="avatar"
-                    src="https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg"
+                    src={
+                      !profile_picture ||
+                      profile_picture === null ||
+                      profile_picture === undefined
+                        ? "https://placehold.co/40x40/png?text=I"
+                        : profile_picture
+                    }
                   />
                 </div>
               </label>
