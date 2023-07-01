@@ -45,7 +45,7 @@ const MyTransaction = () => {
           addClass="bg-base-100 flex flex-col  py-16 px-20"
         >
           <p className="text-4xl font-semibold text-neutral uppercase">
-            My Reservation
+            My Transaction
           </p>
           <div className="divider"></div>
           <div className="w-full p-4">
