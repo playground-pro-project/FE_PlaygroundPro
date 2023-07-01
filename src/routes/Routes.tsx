@@ -189,6 +189,7 @@ const Api = {
         "Access-Control-Allow-Origin": true,
       },
     }),
+
   deleteImageProfile: (token: string | null) =>
     instance({
       method: "DELETE",
@@ -224,6 +225,7 @@ const Api = {
         Authorization: `Bearer ${token}`,
       },
     }),
+    
   validateUser: (token?: string | null, data?: any) =>
     instance({
       method: "POST",
@@ -251,6 +253,16 @@ const Api = {
       data: data,
       headers: {
         Authorization: `Bearer ${token}`,
+      },
+    }),
+
+    checkAvailability: (token: string | null, id_venue: string | null) =>
+    instance({
+      method: "GET",
+      url: `/venues/${id_venue}/availability`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Access-Control-Allow-Origin": true,
       },
     }),
 };

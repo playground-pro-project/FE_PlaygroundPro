@@ -23,14 +23,16 @@ const Validate = () => {
       setPreview(URL.createObjectURL(file));
     }
   };
+
   const formDataToPut = async (datad?: any) => {
     const formData = new FormData();
     formData.append("owner_docs", datad.owner_docs);
-
     await putUsers(formData);
+
   };
 
   const putUsers = async (datad?: any) => {
+    
     await Api.validateUser(token, datad)
       .then((response) => {
         const { message } = response.data;
@@ -41,7 +43,9 @@ const Validate = () => {
           title: message,
         });
       })
+
       .catch((error) => {
+        console.log(error)
         const { data } = error.response;
         Swal.fire({
           icon: "error",
@@ -61,9 +65,11 @@ const Validate = () => {
       await formDataToPut(values);
     },
   });
+
   const handleCancel = () => {
     navigate("/profile");
   };
+
   return (
     <Layout chose="layout">
       <Layout chose="section" addClass="bg-base-100 flex flex-col items-center">

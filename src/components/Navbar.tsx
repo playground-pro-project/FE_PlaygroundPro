@@ -49,7 +49,12 @@ export const Navbar = () => {
         removeIdVenue();
         removeEmail();
         removeRole();
-        Swal.fire("Log Out", "logout Success", "success");
+        removePP();
+        Swal.fire(
+          'Log Out',
+          'logout Success',
+          'success'
+        )
         Swal.fire("Log Out", "logout Success", "success");
         navigate("/");
       }
