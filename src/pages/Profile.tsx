@@ -19,8 +19,24 @@ const Profile = () => {
   const [dataProfile, setDataProfile] = useState<GetProfil>();
   const [load, setLoad] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { token, setPP, setFullname, setPhone, setBio, setAddress } =
-    useStore();
+  const {
+    token,
+    setPP,
+    setFullname,
+    setPhone,
+    setBio,
+    setAddress,
+    removeToken,
+    removeAddress,
+    removeBio,
+    removeEmail,
+    removeFullname,
+    removeIdUser,
+    removePP,
+    removePassword,
+    removePhone,
+    removeRole,
+  } = useStore();
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -106,6 +122,53 @@ const Profile = () => {
       console.error(error);
     } finally {
     }
+  };
+  const delClass = async () => {
+    await Api.delUser(token)
+      .then((response) => {
+        const { message } = response.data;
+        removeFullname();
+        removeEmail();
+        removePhone();
+        removeAddress();
+        removeBio();
+        removeAddress();
+        removeIdUser();
+        removeToken();
+        removeRole();
+        removePP();
+        removePassword();
+        navigate("/");
+
+        Swal.fire({
+          icon: "success",
+          title: message,
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const handleDelete = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        delClass();
+      }
+    });
   };
   useEffect(() => {
     fetchProfile();
@@ -292,6 +355,7 @@ const Profile = () => {
                     <button
                       className="btn btn-error text-white px-3 rounded-md text-center text-bold"
                       type="button"
+                      onClick={handleDelete}
                     >
                       Delete Account
                     </button>
