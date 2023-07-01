@@ -82,7 +82,7 @@ const MyTransaction = () => {
     formikAdd.setFieldValue("venue_id", id);
   };
   const getTransId = (name?: string) => {
-    const dataItem = mytrans.find((item: any) => item.name === name);
+    const dataItem = mytrans.find((item: any) => item.venue_name === name);
     return dataItem?.venue_id;
   };
   useEffect(() => {
