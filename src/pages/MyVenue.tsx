@@ -73,7 +73,7 @@ const MyVenue = () => {
   const HandleAddVenue = async () => {
     HandleAdd();
     console.log(lat, long)
-    // handleUpload();
+    handleUpload();
 
   }
 
