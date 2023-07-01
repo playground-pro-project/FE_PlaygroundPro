@@ -25,7 +25,7 @@ const Validate = () => {
   };
   const formDataToPut = async (datad?: any) => {
     const formData = new FormData();
-    formData.append("owner_docs", datad.file);
+    formData.append("owner_docs", datad.owner_docs);
 
     await putUsers(formData);
   };
