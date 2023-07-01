@@ -21,15 +21,15 @@ interface StoreState {
   setPassword: (password: string | null) => void;
   removePassword: () => void;
 
-    idVenue: string | null;
-    setIdVenue: (idVenue: string | null) => void;
-    removeIdVenue: () => void;
-    
-    // idImageVenye: string | null;
-    // setIdImageVenue: (idImageVenue: string | null) => void;
-    // removeIdImageVenue: () => void;
+  idVenue: string | null;
+  setIdVenue: (idVenue: string | null) => void;
+  removeIdVenue: () => void;
 
-    
+  // idImageVenye: string | null;
+  // setIdImageVenue: (idImageVenue: string | null) => void;
+  // removeIdImageVenue: () => void;
+
+
 
   profile_picture: string | null;
   setPP: (profile_picture: string | null) => void;

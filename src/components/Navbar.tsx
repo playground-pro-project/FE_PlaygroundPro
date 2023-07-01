@@ -9,8 +9,7 @@ import LocationComponent from "./Geolocation";
 export const Navbar = () => {
   const navigate = useNavigate();
   const [Login, setLogin] = useState(true);
-  const { token, role, removeToken , removeIdUser, removePassword, removeIdVenue, removeEmail, removeRole} = useStore();
-  
+  const { profile_picture, token, role, removeToken , removeIdUser, removePassword, removeIdVenue, removeEmail, removeRole} = useStore();
 
   useEffect(() => {
     if (token && typeof token === "string") {
@@ -83,7 +82,7 @@ export const Navbar = () => {
                 <div className="w-10 rounded-full">
                   <img
                     id="avatar"
-                    src="https://static.vecteezy.com/system/resources/thumbnails/002/002/403/small/man-with-beard-avatar-character-isolated-icon-free-vector.jpg"
+                    src={profile_picture || "https://pwco.com.sg/wp-content/uploads/2020/05/Generic-Profile-Placeholder-v3.png"}
                   />
                 </div>
               </label>

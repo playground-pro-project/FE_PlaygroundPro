@@ -30,7 +30,7 @@ const Profile = () => {
       .then((response) => {
         const { data } = response.data;
         setDataProfile(data);
-        setPP(response.data?.profile_picture);
+        setPP(data?.profile_picture);
       })
       .catch((error) => {
         console.log(error);
