@@ -230,9 +230,28 @@ const Api = {
       url: "/users/upgrade",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": true,
       },
       data: data,
+    }),
+
+  getMyTrans: (token: string | null) =>
+    instance({
+      method: "GET",
+      url: `/users/reservations`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Access-Control-Allow-Origin": "*",
+      },
+    }),
+  postReview: (token: string | null, data?: any) =>
+    instance({
+      method: "POST",
+      url: "/reviews",
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }),
 };
 export default Api;

@@ -9,7 +9,7 @@ import { useStore } from "../routes/store/store";
 import Swal from "sweetalert2";
 
 const schema = Yup.object().shape({
-  file: Yup.mixed().required("Image is required"),
+  owner_docs: Yup.mixed().required("Image is required"),
 });
 const Validate = () => {
   const navigate = useNavigate();
@@ -19,13 +19,13 @@ const Validate = () => {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files?.[0];
     if (file) {
-      formikValidate.setFieldValue("file", file);
+      formikValidate.setFieldValue("owner_docs", file);
       setPreview(URL.createObjectURL(file));
     }
   };
   const formDataToPut = async (datad?: any) => {
     const formData = new FormData();
-    formData.append("file", datad.file);
+    formData.append("owner_docs", datad.file);
 
     await putUsers(formData);
   };
@@ -54,7 +54,7 @@ const Validate = () => {
 
   const formikValidate = useFormik({
     initialValues: {
-      file: null,
+      owner_docs: null,
     },
     validationSchema: schema,
     onSubmit: async (values) => {
@@ -102,9 +102,9 @@ const Validate = () => {
           </div>
 
           <InputFile
-            id="file"
-            name="file"
-            label="profile picture name"
+            id="owner_docs"
+            name="owner_docs"
+            label="owner_docs name"
             onChange={handleImageChange}
           />
 
