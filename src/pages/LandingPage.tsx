@@ -5,19 +5,21 @@ import CardVenue from '../components/CardVenue'
 import Layout from '../components/Layout'
 import { BsSearch } from "react-icons/bs";
 import Api from '../routes/Routes';
+import { useStore } from '../routes/store/store';
 
 const LandingPage = () => {
     const [venue, setVenue] = useState<any>([]);
-    const [page, setPage] = useState<number>(1)
-   const limit: number = 10;
-
+    const [page, setPage] = useState<number>(1);
+    const { longitud, latitud } = useStore();
+    const limit: number = 9;
+    
     useEffect(() => {
-      
+
         const fetchVenue = async () => {
             try {
-                const response = await Api.GetVenue(page, limit);
+                const response = await Api.GetVenue(page, limit, Math.floor(longitud), Math.floor(latitud));
                 setVenue(response.data)
-                
+
 
             } catch (error) {
                 console.error(error)
@@ -29,15 +31,15 @@ const LandingPage = () => {
     }, [page]);
 
     const handleNextPage = () => {
-        if(venue.pagination.total_pages > page || venue.pagination.total_pages === undefined ) {
+        if (venue.pagination.total_pages > page || venue.pagination.total_pages === undefined) {
             setPage((prevPage) => prevPage + 1);
         }
-       console.log(venue.pagination)
-      };
-      
-      const handlePrevPage = () => {
+        console.log(venue.pagination)
+    };
+
+    const handlePrevPage = () => {
         setPage((prevPage) => (prevPage > 1 ? prevPage - 1 : 1));
-      };
+    };
 
 
     return (
@@ -97,11 +99,11 @@ const LandingPage = () => {
                     <div className='flex flex-wrap justify-center gap-5 p-10'>
                         {venue.data?.map((item: any, index: number) => (
                             <CardVenue
-                            key={index}
+                                key={index}
                                 IdVenue={item.venue_id}
                                 Image={item.venue_picture === undefined ? "https://th.bing.com/th/id/R.bed7fe8f284e8affe44d3dd817bdb8f2?rik=pMJJqkdyZG46SA&riu=http%3a%2f%2fwww.jennybeaumont.com%2fwp-content%2fuploads%2f2015%2f03%2fplaceholder.gif&ehk=3wTSmgFAHjHh1cl9Ay9w%2bNOsyhgED387BWJVO7Il2KI%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1" : item.venue_picture}
                                 Place={item.location}
-                                Range={10}
+                                Range={Math.floor(item.distance)}
                                 Name={item.name}
                                 Rating={item.average_rating === undefined ? "0" : item.average_rating}
                                 Price={item.price}

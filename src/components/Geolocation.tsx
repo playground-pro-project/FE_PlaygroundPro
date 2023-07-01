@@ -1,18 +1,24 @@
 import { useEffect, useState } from 'react';
+import { useStore } from "../routes/store/store";
 
 const LocationComponent = () => {
   const [city, setCity] = useState('');
+  const { setLat, setLong } = useStore()
+  
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           fetchCityName(position.coords.latitude, position.coords.longitude);
+          setLat(position.coords.latitude)
+          setLong(position.coords.longitude)
         },
         (error) => {
           console.log(error);
         }
       );
+
     } else {
       console.log('Geolocation is not supported by this browser.');
     }

@@ -87,10 +87,10 @@ const Api = {
     }),
 
 
-  GetVenue: (page: number, limit: number): AxiosPromise<GetVenues[]> =>
+  GetVenue: (page: number, limit: number, long: number, lat: number): AxiosPromise<GetVenues[]> =>
     instance({
       method: 'GET',
-      url: `/venues?limit=${limit}&page=${page}`,
+      url: `/venues?limit=${limit}&page=${page}&longitude=${long}&latitude=${lat}`,
     }),
 
   GetVenueById: (
@@ -162,7 +162,10 @@ const Api = {
     description: string | null,
     location: string | null,
     price: number | null,
-    category: string | null
+    category: string | null,
+    lat: number | null,
+    lon: number | null,
+    service_time: string | null,
   ): AxiosPromise<EditVenueResponse> =>
     instance({
       method: "POST",
@@ -176,6 +179,9 @@ const Api = {
         location,
         price,
         category,
+        lat,
+        lon,
+        service_time,
       },
     }),
   getProfile: (token: string | null) =>
