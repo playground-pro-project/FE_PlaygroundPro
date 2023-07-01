@@ -3,7 +3,7 @@ import { useStore } from "../routes/store/store";
 
 const LocationComponent = () => {
   const [city, setCity] = useState('');
-  const { setLat, setLong , latitud, longitud} = useStore()
+  const { setLat, setLong } = useStore()
   
 
   useEffect(() => {
