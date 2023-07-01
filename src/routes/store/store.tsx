@@ -37,6 +37,22 @@ interface StoreState {
   profile_picture: string | null;
   setPP: (profile_picture: string | null) => void;
   removePP: () => void;
+
+  full_name: string | null;
+  setFullname: (full_name: string | null) => void;
+  removeFullname: () => void;
+
+  phone: string | null;
+  setPhone: (phone: string | null) => void;
+  removePhone: () => void;
+
+  address: string | null;
+  setAddress: (address: string | null) => void;
+  removeAddress: () => void;
+
+  bio: string | null;
+  setBio: (bio: string | null) => void;
+  removeBio: () => void;
 }
 
 const store = create<StoreState>((set: SetState<StoreState>) => ({
@@ -168,6 +184,58 @@ const store = create<StoreState>((set: SetState<StoreState>) => ({
   removePP: () => {
     localStorage.removeItem("profile_picture");
     set({ profile_picture: null });
+  },
+  full_name: localStorage.getItem("full_name"),
+  setFullname: (full_name) => {
+    if (full_name) {
+      localStorage.setItem("full_name", full_name);
+    } else {
+      localStorage.removeItem("full_name");
+    }
+    set({ full_name });
+  },
+  removeFullname: () => {
+    localStorage.removeItem("full_name");
+    set({ full_name: null });
+  },
+  phone: localStorage.getItem("phone"),
+  setPhone: (phone) => {
+    if (phone) {
+      localStorage.setItem("phone", phone);
+    } else {
+      localStorage.removeItem("phone");
+    }
+    set({ phone });
+  },
+  removePhone: () => {
+    localStorage.removeItem("phone");
+    set({ phone: null });
+  },
+  address: localStorage.getItem("address"),
+  setAddress: (address) => {
+    if (address) {
+      localStorage.setItem("address", address);
+    } else {
+      localStorage.removeItem("address");
+    }
+    set({ address });
+  },
+  removeAddress: () => {
+    localStorage.removeItem("address");
+    set({ address: null });
+  },
+  bio: localStorage.getItem("bio"),
+  setBio: (bio) => {
+    if (bio) {
+      localStorage.setItem("bio", bio);
+    } else {
+      localStorage.removeItem("bio");
+    }
+    set({ bio });
+  },
+  removeBio: () => {
+    localStorage.removeItem("bio");
+    set({ bio: null });
   },
 }));
 

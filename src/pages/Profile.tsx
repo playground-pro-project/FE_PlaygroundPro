@@ -19,7 +19,24 @@ const Profile = () => {
   const [dataProfile, setDataProfile] = useState<GetProfil>();
   const [load, setLoad] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { token, setPP } = useStore();
+  const {
+    token,
+    setPP,
+    setFullname,
+    setPhone,
+    setBio,
+    setAddress,
+    removeToken,
+    removeAddress,
+    removeBio,
+    removeEmail,
+    removeFullname,
+    removeIdUser,
+    removePP,
+    removePassword,
+    removePhone,
+    removeRole,
+  } = useStore();
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -30,7 +47,11 @@ const Profile = () => {
       .then((response) => {
         const { data } = response.data;
         setDataProfile(data);
-        setPP(data?.profile_picture);
+        setPP(data.profile_picture);
+        setFullname(data.fullname);
+        setPhone(data.phone);
+        setAddress(data.address);
+        setBio(data.bio);
       })
       .catch((error) => {
         console.log(error);
@@ -102,6 +123,53 @@ const Profile = () => {
     } finally {
     }
   };
+  const delClass = async () => {
+    await Api.delUser(token)
+      .then((response) => {
+        const { message } = response.data;
+        removeFullname();
+        removeEmail();
+        removePhone();
+        removeAddress();
+        removeBio();
+        removeAddress();
+        removeIdUser();
+        removeToken();
+        removeRole();
+        removePP();
+        removePassword();
+        navigate("/");
+
+        Swal.fire({
+          icon: "success",
+          title: message,
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const handleDelete = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        delClass();
+      }
+    });
+  };
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -166,7 +234,7 @@ const Profile = () => {
           chose="section"
           addClass="bg-base-100 flex py-12 justify-center px-20"
         >
-          <div className="flex">
+          <div className="flex flex-col md:p-10">
             <div className="flex flex-col items-center">
               <div className="flex flex-row pb-5">
                 <p className="text-[#291334] text-5xl tracking-wider font-bold text-center">
@@ -185,18 +253,17 @@ const Profile = () => {
               <div className="flex flex-col justify-center items-center pb-5">
                 <form className="flex flex-col mb-20 pt-10">
                   <div className="flex w-full">
-                    <div className="flex flex-col w-1/2 justify-center items-start">
-                      <div className="card pb-5">
-                        <div className="p-1 bg-slate-300 rounded-full">
+                    <div className="flex flex-col w-full h-full">
+                      <div className="hero-content flex-col lg:flex-row w-full justify-start items-start">
+                        <div className="flex justify-center">
                           <img
                             src={dataProfile?.profile_picture || "no image"}
                             alt={``}
-                            className="h-52 w-52 border-spacing-1 rounded-full object-cover object-center"
+                            className="max-w-sm  rounded-full shadow-2xl object-cover object-center"
                           />
                         </div>
                       </div>
-                      <div className="mt-0 modal-action flex flex-col">
-                        <div className="mx-5"></div>
+                      <div className="mt-0 modal-action flex flex-row justify-center items-center">
                         <label
                           htmlFor="modal-add-image"
                           className="flex items-center justify-center h-12 gap-3 font-semibold text-white btn btn-ghost hover:text-black bg-primary rounded-xl"
@@ -214,7 +281,7 @@ const Profile = () => {
                         </label>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-1 w-3/6 m-3">
+                    <div className="flex flex-col gap-1 w-full m-3">
                       <div className="w-full">
                         <label htmlFor="fullname" className="label">
                           <p className="label-text">Name: </p>
@@ -288,6 +355,7 @@ const Profile = () => {
                     <button
                       className="btn btn-error text-white px-3 rounded-md text-center text-bold"
                       type="button"
+                      onClick={handleDelete}
                     >
                       Delete Account
                     </button>
