@@ -24,7 +24,20 @@ const schemaPassword = Yup.object().shape({
 });
 
 const EditProfile = () => {
-  const { token, profile_picture } = useStore();
+  const {
+    token,
+    profile_picture,
+    removeToken,
+    removeAddress,
+    removeBio,
+    removeEmail,
+    removeFullname,
+    removeIdUser,
+    removePP,
+    removePassword,
+    removePhone,
+    removeRole,
+  } = useStore();
   const navigate = useNavigate();
   const fetchProfile = async () => {
     await Api.getProfile(token)
@@ -54,7 +67,7 @@ const EditProfile = () => {
     },
     validationSchema: schemaPassword,
     onSubmit: async (values) => {
-      // await putUsers(values);
+      await putPassword(values);
     },
   });
   const formik = useFormik({
@@ -80,7 +93,27 @@ const EditProfile = () => {
 
     await putUsers(formData);
   };
+  const putPassword = async (datad?: any) => {
+    await Api.putPassword(token, datad)
+      .then((response) => {
+        const { message } = response.data;
+        navigate("/profile");
 
+        Swal.fire({
+          icon: "success",
+          title: message,
+        });
+      })
+      .catch((error) => {
+        const { data } = error.response;
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: `error :  ${data.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
   const putUsers = async (datad?: any) => {
     await Api.editProfile(token, datad)
       .then((response) => {
@@ -102,7 +135,53 @@ const EditProfile = () => {
         });
       });
   };
+  const delClass = async () => {
+    await Api.delUser(token)
+      .then((response) => {
+        const { message } = response.data;
+        removeFullname();
+        removeEmail();
+        removePhone();
+        removeAddress();
+        removeBio();
+        removeAddress();
+        removeIdUser();
+        removeToken();
+        removeRole();
+        removePP();
+        removePassword();
+        navigate("/");
 
+        Swal.fire({
+          icon: "success",
+          title: message,
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: `error :  ${error.message}`,
+          showCancelButton: false,
+        });
+      });
+  };
+
+  const handleDelete = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        delClass();
+      }
+    });
+  };
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -117,7 +196,10 @@ const EditProfile = () => {
 
           {/* Modal */}
           <div className="modal">
-            <form className="modal-box relative flex flex-col gap-3">
+            <form
+              className="modal-box relative flex flex-col gap-3"
+              onSubmit={formikPassword.handleSubmit}
+            >
               <label
                 htmlFor="my-modal-3"
                 className="btn btn-sm btn-error absolute right-2 top-2 text-white"
@@ -133,6 +215,11 @@ const EditProfile = () => {
                   name="old_password"
                   label="type your old password here"
                   type="password"
+                  value={formikPassword.values.old_password}
+                  onChange={formikPassword.handleChange}
+                  onBlur={formikPassword.handleBlur}
+                  error={formikPassword.errors.old_password}
+                  touch={formikPassword.touched.old_password}
                 />
               </div>
 
@@ -145,6 +232,11 @@ const EditProfile = () => {
                   name="password"
                   label="type your new password here"
                   type="password"
+                  value={formikPassword.values.password}
+                  onChange={formikPassword.handleChange}
+                  onBlur={formikPassword.handleBlur}
+                  error={formikPassword.errors.password}
+                  touch={formikPassword.touched.password}
                 />
               </div>
 
@@ -157,6 +249,11 @@ const EditProfile = () => {
                   name="confirmPassword"
                   label="type your confirm password here"
                   type="password"
+                  value={formikPassword.values.confirmPassword}
+                  onChange={formikPassword.handleChange}
+                  onBlur={formikPassword.handleBlur}
+                  error={formikPassword.errors.confirmPassword}
+                  touch={formikPassword.touched.confirmPassword}
                 />
               </div>
 
@@ -293,7 +390,10 @@ const EditProfile = () => {
           </form>
 
           <div className="flex flex-row justify-center mb-20">
-            <div className="btn btn-wide btn-error text-white mr-4">
+            <div
+              className="btn btn-wide btn-error text-white mr-4"
+              onClick={handleDelete}
+            >
               Delete Account
             </div>
             <div className="">
