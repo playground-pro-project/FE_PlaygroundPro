@@ -19,6 +19,7 @@ const LandingPage = () => {
             try {
                 const response = await Api.GetVenue(page, limit, Math.floor(longitud), Math.floor(latitud));
                 setVenue(response.data)
+               
 
 
             } catch (error) {
@@ -54,7 +55,7 @@ const LandingPage = () => {
                         <div className='flex items-center justify-center w-1/2'>
                             <div>
                                 <div>
-                                    <h1 className="z-20 text-4xl font-bold text-white">"Lorem ipsum ini tagline website"</h1>
+                                    <h1 className="z-20 text-4xl font-bold text-white">"Find your favorite place right now !"</h1>
                                 </div>
                                 <div className='flex items-center justify-between w-full h-16 p-5 mt-5 bg-gray-100 rounded-xl grow'>
                                     <select className="bg-gray-100 select">
@@ -107,6 +108,7 @@ const LandingPage = () => {
                                 Name={item.name}
                                 Rating={item.average_rating === undefined ? "0" : item.average_rating}
                                 Price={item.price}
+                               
                             />))}
 
 

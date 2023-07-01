@@ -72,49 +72,36 @@ const MyVenue = () => {
 
   const HandleAddVenue = async () => {
     HandleAdd();
-    console.log(lat, long)
-    handleUpload();
 
   }
 
   const HandleAdd = async () => {
     const { name, description, price, category, service_time_open, service_time_close } = formik.values;
-
+    
     const time = `${service_time_open} - ${service_time_close}`
 
-    try {
-      const response = await Api.AddVenue(token, name, description, city, price, category, lat, long, time)
-      console.log(response)
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Add Venue Success',
-        showConfirmButton: false,
-        timer: 1800
-      })
-    }
-    catch (error) {
-      console.error(error)
-    }
-    finally {
-      formik.resetForm();
-      setData(!data)
-    }
-  }
-
-  const handleUpload = async () => {
     const formData = new FormData();
-    formData.append('files', selectedFile);
+    console.log(category)
 
+    formData.append('file', selectedFile);
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('location', city);
+    formData.append('price', price.toString());
+    formData.append('category', category);
+    formData.append('lat', lat.toString());
+    formData.append('lon', long.toString());
+    formData.append('service_time', time);
 
     try {
 
-      await axios.post(`https://peterzalai.biz.id/venues/${idUser}/images`, formData, {
+      await axios.post(`https://peterzalai.biz.id/venues`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         }
       });
+
       Swal.fire({
         position: 'center',
         icon: 'success',
@@ -128,15 +115,19 @@ const MyVenue = () => {
       Swal.fire({
         icon: "error",
         title: "Failed",
-        text: "Gagal Upload Image",
+        text: "Failed Add Venue",
       });
     } finally {
       setData(!data)
       setSelectedFile(null)
       setPreviewUrl(null)
+      setLat(0)
+      setLon(0)
 
     }
-  };
+
+  }
+
 
   const handleFileUpload = () => {
 
@@ -214,37 +205,43 @@ const MyVenue = () => {
                     defaultVal={'Category'}
                     onChangeSelect={formik.handleChange}
                   >
-                    <option value="sepak_bola" id="sepak_bola">
+                    <option value="football" id="football_option">
                       Sepak Bola
                     </option>
                     <option value="voli" id="voli_option">
                       Voli
                     </option>
-                    <option value="bni" id="futsal_option">
+                    <option value="futsal" id="futsal_option">
                       Futsal
+                    </option>
+                    <option value="basketball" id="basketball_option">
+                      Basket
+                    </option>
+                    <option value="badminton" id="badminton_option">
+                      Basket
                     </option>
                   </Select>
                   <div className='w-full flex justify-between gap-2'>
                     <div>
                       <label>Open</label>
-                      <Input 
-                      type='time' 
-                      label='time_open'
-                      id='time_open'
-                      name='service_tipe_open'
-                      value={formik.values.service_time_open}
-                      onChange={formik.handleChange}
+                      <Input
+                        type='time'
+                        label='time_open'
+                        id='time_open'
+                        name='service_time_open'
+                        value={formik.values.service_time_open}
+                        onChange={formik.handleChange}
                       />
                     </div>
                     <div>
                       <label>Close</label>
-                      <Input 
-                      type='time' 
-                      label='time_close'
-                      id='time_close'
-                      name='service_tipe_close'
-                      value={formik.values.service_time_close}
-                      onChange={formik.handleChange}
+                      <Input
+                        type='time'
+                        label='time_close'
+                        id='time_close'
+                        name='service_time_close'
+                        value={formik.values.service_time_close}
+                        onChange={formik.handleChange}
                       />
                     </div>
 
@@ -274,6 +271,7 @@ const MyVenue = () => {
               </div>
               <div className='w-full mt-5'>
                 <label htmlFor="marker" className='mb-5'>Location : <span className='font-bold'>{city}</span></label>
+                <br/><label >lat : {lat} long : {long}</label>
                 <Markers onMarkerClick={handleMarkerClick} />
               </div>
 

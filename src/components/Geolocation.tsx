@@ -3,7 +3,7 @@ import { useStore } from "../routes/store/store";
 
 const LocationComponent = () => {
   const [city, setCity] = useState('');
-  const { setLat, setLong } = useStore()
+  const { setLat, setLong , latitud, longitud} = useStore()
   
 
   useEffect(() => {
@@ -31,6 +31,7 @@ const LocationComponent = () => {
       );
       const data = await response.json();
       setCity(data.city)
+      console.log(data)
 
     } catch (error) {
       console.log(error);
@@ -39,7 +40,8 @@ const LocationComponent = () => {
 
   return (
     <div>
-      {city}
+      <span className='font-bold'>{city}</span> 
+      <span className='text-sm'>lat : {latitud} long : {longitud}</span>
     </div>
   );
 };

@@ -10,7 +10,7 @@ export interface CardVenue {
     Rating?: number,
     Price: number,
     IdVenue?: any,
-
+    
 }
 
 const CardVenue: FC<CardVenue> = ({ Image, Place, Range, Name, Rating, Price, IdVenue }) => {
@@ -50,6 +50,7 @@ const CardVenue: FC<CardVenue> = ({ Image, Place, Range, Name, Rating, Price, Id
                         </div>
                         <p className="mt-3 text-xl font-bold">{Name}</p>
                         <p className="mt-2 text-2xl font-bold text-oren">{formattedValue} / Hour</p>
+                       
                     </div>
                 </div>
             </div>
