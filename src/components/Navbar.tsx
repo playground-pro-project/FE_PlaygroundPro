@@ -9,7 +9,7 @@ import LocationComponent from "./Geolocation";
 export const Navbar = () => {
   const navigate = useNavigate();
   const [Login, setLogin] = useState(true);
-  const { profile_picture, token, role, removeToken , removeIdUser, removePassword, removeIdVenue, removeEmail, removeRole} = useStore();
+  const { profile_picture, token, role, removeToken , removeIdUser, removePassword, removeIdVenue, removeEmail, removeRole, removePP} = useStore();
 
   useEffect(() => {
     if (token && typeof token === "string") {
@@ -39,6 +39,7 @@ export const Navbar = () => {
         removeIdVenue();
         removeEmail();
         removeRole();
+        removePP();
         Swal.fire(
           'Log Out',
           'logout Success',

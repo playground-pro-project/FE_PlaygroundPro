@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Eventcalendar,
   snackbar,
@@ -15,54 +15,15 @@ import {
 import "../styles/avail.css";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import Layout from "../components/Layout";
+import Api from '../routes/Routes';
+import { useStore } from '../routes/store/store';
 
 setOptions({
   theme: "windows",
   themeVariant: "light",
 });
 
-const defaultEvents = [
-  {
-    id: 1,
-    start: "2023-06-25T13:00",
-    end: "2023-06-25T14:00",
-    title: "Booked",
-    description: "",
-    allDay: false,
-    free: true,
-    color: "#009788",
-  },
-  {
-    id: 2,
-    start: "2023-06-25T15:00",
-    end: "2023-06-25T16:00",
-    title: "Orang Sanjaya",
-    description: "",
-    allDay: false,
-    free: false,
-    color: "#ff9900",
-  },
-  {
-    id: 3,
-    start: "2023-06-26T13:00",
-    end: "2023-06-26T14:00",
-    title: "Orang Senayan",
-    description: "",
-    allDay: false,
-    free: true,
-    color: "#3f51b5",
-  },
-  {
-    id: 4,
-    start: "2023-06-27T13:00",
-    end: "2023-06-27T14:00",
-    title: "Orang Malang",
-    description: "",
-    allDay: false,
-    free: false,
-    color: "#f44437",
-  },
-];
+
 const viewSettings: MbscEventcalendarView = {
   schedule: { type: "week" },
 };
@@ -95,6 +56,45 @@ const colors = [
 ];
 
 const CheckAvail: React.FC = () => {
+  const { idVenue, token } = useStore();
+  const [avail, setAvail] = useState<any>([]);
+
+
+  useEffect(() => {
+
+    const fetchAvail = async () => {
+      try {
+        const response = await Api.checkAvailability(token, idVenue);
+        setAvail(response?.data?.data.map((item: any) => (
+          (item.reservations)
+        )))
+
+
+      } catch (error) {
+        console.error(error)
+      }
+    };
+
+    fetchAvail();
+
+  }, []);
+
+
+  const defaultEvents = [
+    {
+      id: 1,
+      start: "",
+      end: "",
+      title: "",
+      description: "",
+      allDay: false,
+      free: true,
+      color: "#009788",
+    }
+
+  ];
+
+
   const [myEvents, setMyEvents] =
     React.useState<MbscCalendarEvent[]>(defaultEvents);
   const [tempEvent, setTempEvent] = React.useState<any>(null);
@@ -113,6 +113,27 @@ const CheckAvail: React.FC = () => {
   const [colorAnchor] = React.useState<any>(null);
   const [selectedColor, setSelectedColor] = React.useState("");
   const [tempColor, setTempColor] = React.useState("");
+
+  useEffect(() => {
+    const fetchEvents = avail?.flatMap((itemLevel1: any) =>
+      itemLevel1?.flatMap((itemLevel2: any, index: number) => ({
+        key: index,
+        id: index + 1,
+        start: itemLevel2?.check_in_date,
+        end: itemLevel2?.check_out_date,
+        title: "Booked",
+        description: "",
+        allDay: false,
+        free: true,
+        color: "#009788",
+      }))
+    );
+  
+    setMyEvents(fetchEvents);
+  }, [avail]);
+  
+
+
   const colorPicker = React.useRef<any>();
   const colorButtons = React.useMemo<any>(
     () => [
@@ -278,17 +299,17 @@ const CheckAvail: React.FC = () => {
     () =>
       popupEventAllDay
         ? {
-            medium: {
-              controls: ["calendar"],
-              touchUi: false,
-            },
-          }
-        : {
-            medium: {
-              controls: ["calendar", "time"],
-              touchUi: false,
-            },
+          medium: {
+            controls: ["calendar"],
+            touchUi: false,
           },
+        }
+        : {
+          medium: {
+            controls: ["calendar", "time"],
+            touchUi: false,
+          },
+        },
     [popupEventAllDay]
   );
   const popupButtons = React.useMemo<any>(() => {
@@ -345,7 +366,7 @@ const CheckAvail: React.FC = () => {
 
   return (
     <Layout chose="layout">
-      <Layout chose="section" addClass="bg-base-100">
+      <Layout chose="section" addClass="bg-base-100 p-10">
         <div className="mt-10 ml-10 text-3xl font-semibold text-center">
           Check Venue Availability
         </div>
@@ -363,7 +384,7 @@ const CheckAvail: React.FC = () => {
             onEventClick={onEventClick}
             onEventCreated={onEventCreated}
             onEventDeleted={onEventDeleted}
-            // onEventUpdated={onEventUpdated}
+          // onEventUpdated={onEventUpdated}
           />
           <Popup
             display="bottom"
