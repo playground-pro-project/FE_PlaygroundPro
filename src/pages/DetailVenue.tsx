@@ -8,10 +8,10 @@ import {
     BsFillPlusCircleFill,
     BsFillPencilFill,
     BsFillCloudArrowUpFill,
-    BsStarHalf, BsStar
+    BsStarHalf, BsStar, BsFillClockFill
 } from "react-icons/bs";
 import { Acordion } from '../components/Acordion';
-import Map  from '../components/Maps';
+import Map from '../components/Maps';
 import { Modals } from '../components/Modal';
 import { Input, TextArea } from '../components/Input';
 import { useStore } from '../routes/store/store';
@@ -27,6 +27,8 @@ const schema = Yup.object({
     description: Yup.string(),
     location: Yup.string(),
     price: Yup.number(),
+    service_open: Yup.string(),
+    service_close: Yup.string(),
 
 });
 
@@ -47,9 +49,10 @@ const DetailVenue = () => {
         const fetchVenue = async () => {
             try {
                 const response = await Api.GetVenueById(idVenue, token);
+                console.log(response.data)
                 setVenue(response.data?.data)
                 setUserId(response.data?.data.user_id)
-              
+
             } catch (error) {
                 console.error(error)
             }
@@ -66,7 +69,7 @@ const DetailVenue = () => {
         const fetchImage = async () => {
             try {
                 const response = await Api.GetImageVenuebyId(idVenue, token);
-                
+
                 setImage(response.data.data)
 
             } catch (error) {
@@ -77,10 +80,10 @@ const DetailVenue = () => {
         fetchVenue();
         fetchReview();
         fetchImage();
-      
+
 
     }, [data]);
- 
+
 
     const formik = useFormik({
         initialValues: {
@@ -88,6 +91,8 @@ const DetailVenue = () => {
             description: '',
             location: '',
             price: 0,
+            service_open: '',
+            service_close: '',
 
         },
         validationSchema: schema,
@@ -99,15 +104,16 @@ const DetailVenue = () => {
 
 
     const HandleEdit = async () => {
-        const { name, description, location, price } = formik.values;
+        const { name, description, location, price, service_open, service_close } = formik.values;
+        const time = `${service_open} - ${service_close}`
 
         try {
-            await Api.EditVenue(token, idVenue, name, description, location, price)
+            await Api.EditVenue(token, idVenue, name, description, location, price, time)
             Swal.fire(
                 'Edit Venue',
                 'Edit Venue Success',
                 'success'
-            )  
+            )
         }
         catch (error) {
             console.error(error)
@@ -142,7 +148,7 @@ const DetailVenue = () => {
 
         try {
 
-             await axios.post(`https://peterzalai.biz.id/venues/${idVenue}/images`, formData, {
+            await axios.post(`https://peterzalai.biz.id/venues/${idVenue}/images`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,
@@ -200,7 +206,7 @@ const DetailVenue = () => {
             confirmButtonText: 'Yes, Delete'
         }).then((result) => {
             if (result.isConfirmed) {
-                HandleDelete()  
+                HandleDelete()
             }
         })
     }
@@ -223,15 +229,15 @@ const DetailVenue = () => {
                 'warning'
             )
         }
-       
+
     }
 
-   
 
 
-    const latitude = -7.3804308; // Contoh nilai latitude
-    const longitude = 109.3664238; // Contoh nilai longitude
-   
+
+    const latitude = venue.lat || -7.3893317;
+    const longitude = venue.lon || 109.3630732;
+
     return (
         <>
             <Layout
@@ -268,6 +274,33 @@ const DetailVenue = () => {
                             }
                             value={formik.values.price}
                         />
+                        <div className='flex justify-start gap-5'>
+                            <div>
+                                <label>Open</label>
+                                <Input
+                                    type='time'
+                                    label='time_open'
+                                    id='time_open'
+                                    name='service_open'
+                                    value={formik.values.service_open}
+                                    onChange={formik.handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label>Close</label>
+                                <Input
+                                    type='time'
+                                    label='time_close'
+                                    id='time_close'
+                                    name='service_close'
+                                    value={formik.values.service_close}
+                                    onChange={formik.handleChange}
+                                />
+                            </div>
+
+                        </div>
+
+
                         <TextArea
                             id='description'
                             label='Description'
@@ -339,8 +372,8 @@ const DetailVenue = () => {
                     />
                     <div className='grid w-full grid-cols-2 gap-3 mb-10'>
                         <div className='w-full m-4 h-max'>
-                        <Map latitude={latitude} longitude={longitude} />
-                       
+                            <Map latitude={latitude} longitude={longitude} />
+
 
                         </div>
                         <div className='pl-5 mt-3'>
@@ -349,12 +382,13 @@ const DetailVenue = () => {
                                     {venue.venue_name}
                                 </div>
                                 <div className='flex items-center justify-end w-1/5 gap-2 pr-5 text-xl font-bold text-yellow'>
-                                    <span className='text-black'>{venue.average_rating === undefined? "0" : Math.round(venue.average_rating * 10) / 10}</span>  <BsFillStarFill />
+                                    <span className='text-black'>{venue.average_rating === undefined ? "0" : Math.round(venue.average_rating * 10) / 10}</span>  <BsFillStarFill />
                                 </div>
                             </div>
                             <div className='flex items-center gap-3 mt-5 text-xl font-semibold text-gray-500'>
-                                <BsFillGeoAltFill />{venue.location}a <span className='text-white badge bg-oren'>10 Km </span>
+                                <BsFillGeoAltFill />{venue.location} <span className='text-white badge bg-oren'>{venue.distance || 0} Km </span>   <BsFillClockFill /> {venue.service_time}
                             </div>
+
                             <div className='mt-5 text-4xl font-bold text-oren'>
                                 Rp.{venue.price},- / Hour
                             </div>
@@ -430,7 +464,7 @@ const DetailVenue = () => {
                         </div>
                     </div>
                 </Layout>
-            </Layout>
+            </Layout >
         </>
     )
 }

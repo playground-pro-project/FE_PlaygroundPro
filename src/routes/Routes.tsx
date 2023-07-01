@@ -3,13 +3,13 @@ import {
   LoginResponse,
   OTPResponse,
   RegisterResponse,
-   UserResponse, 
-   ResendOTPResponse, 
-   GetVenues, 
-   GetVenuesById, 
-   GetReview, 
-   EditVenueResponse, 
-   } from './Utils'
+  UserResponse,
+  ResendOTPResponse,
+  GetVenues,
+  GetVenuesById,
+  GetReview,
+  EditVenueResponse,
+} from './Utils'
 
 const instance = axios.create({
   baseURL: "https://peterzalai.biz.id/",
@@ -105,7 +105,7 @@ const Api = {
       },
     }),
 
-  DeleteVenueById: (token: string | null, id: string | null, ): AxiosPromise<GetVenuesById> =>
+  DeleteVenueById: (token: string | null, id: string | null,): AxiosPromise<GetVenuesById> =>
     instance({
       method: "DELETE",
       url: `/venues/${id}`,
@@ -123,7 +123,7 @@ const Api = {
       },
 
     }),
-    
+
   GetImageVenuebyId: (id: string | null, token: string | null): AxiosPromise<any> =>
     instance({
       method: 'GET',
@@ -140,7 +140,8 @@ const Api = {
     name: string | null,
     description: string | null,
     location: string | null,
-    price: number | null
+    price: number | null,
+    service_time: string | null,
   ): AxiosPromise<EditVenueResponse> =>
     instance({
       method: "PUT",
@@ -153,37 +154,12 @@ const Api = {
         description,
         location,
         price,
+        service_time
       },
     }),
 
-  AddVenue: (
-    token: string | null,
-    name: string | null,
-    description: string | null,
-    location: string | null,
-    price: number | null,
-    category: string | null,
-    lat: number | null,
-    lon: number | null,
-    service_time: string | null,
-  ): AxiosPromise<EditVenueResponse> =>
-    instance({
-      method: "POST",
-      url: `/venues`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: {
-        name,
-        description,
-        location,
-        price,
-        category,
-        lat,
-        lon,
-        service_time,
-      },
-    }),
+
+
   getProfile: (token: string | null) =>
     instance({
       method: "GET",
