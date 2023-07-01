@@ -19,6 +19,7 @@ export const Navbar = () => {
     removeIdVenue,
     removeEmail,
     removeRole,
+    removePP,
   } = useStore();
 
   useEffect(() => {
@@ -50,11 +51,7 @@ export const Navbar = () => {
         removeEmail();
         removeRole();
         removePP();
-        Swal.fire(
-          'Log Out',
-          'logout Success',
-          'success'
-        )
+        Swal.fire("Log Out", "logout Success", "success");
         Swal.fire("Log Out", "logout Success", "success");
         navigate("/");
       }
