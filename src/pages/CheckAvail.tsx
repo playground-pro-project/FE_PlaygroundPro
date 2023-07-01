@@ -110,7 +110,7 @@ const CheckAvail: React.FC = () => {
   const [popupEventStatus, setStatus] = React.useState<string>("busy");
   const [mySelectedDate, setSelectedDate] = React.useState<any>(new Date());
   const [colorPickerOpen, setColorPickerOpen] = React.useState(false);
-  const [colorAnchor, setColorAnchor] = React.useState<any>(null);
+  const [colorAnchor] = React.useState<any>(null);
   const [selectedColor, setSelectedColor] = React.useState("");
   const [tempColor, setTempColor] = React.useState("");
   const colorPicker = React.useRef<any>();
