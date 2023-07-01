@@ -49,7 +49,7 @@ const DetailVenue = () => {
         const fetchVenue = async () => {
             try {
                 const response = await Api.GetVenueById(idVenue, token);
-                console.log(response.data)
+                
                 setVenue(response.data?.data)
                 setUserId(response.data?.data.user_id)
 
@@ -232,8 +232,9 @@ const DetailVenue = () => {
 
     }
 
-
-
+    const HanldeCheckAvail = () => {
+        navigate('/checkavail')
+    }
 
     const latitude = venue.lat || -7.3893317;
     const longitude = venue.lon || 109.3630732;
@@ -313,11 +314,11 @@ const DetailVenue = () => {
                     </div>
                     <div className="flex justify-end w-full gap-3">
                         <div className="mt-0 modal-action ">
-                            <label htmlFor="modal-edit-venue" className="btn btn-ghost">
+                            <label htmlFor="modal-edit-venue" className="btn btn-ghost" id='btn-close'>
                                 Close
                             </label>
                         </div>
-                        <button className="w-32 text-white btn btn-primary" onClick={HandleEdit}>
+                        <button className="w-32 text-white btn btn-primary" id='btn-save' onClick={HandleEdit}>
                             Save
                         </button>
                     </div>
@@ -330,7 +331,7 @@ const DetailVenue = () => {
                             Add Image
                         </div>
                         <div className='w-full'>
-                            <div className='flex flex-col items-center justify-center w-full border-2 border-gray-800 border-dashed rounded-xl h-52 bg-base-100 hover:cursor-pointer hover:animate-pulse'
+                            <div id='upload-image' className='flex flex-col items-center justify-center w-full border-2 border-gray-800 border-dashed rounded-xl h-52 bg-base-100 hover:cursor-pointer hover:animate-pulse'
                                 onClick={handleFileUpload}
                             >
                                 <input type="file" className="hidden" onChange={handleSelectedFile} ref={fileInputRef} />
@@ -350,11 +351,11 @@ const DetailVenue = () => {
 
                         <div className='flex justify-end w-full gap-2 mt-10'>
                             <div className="mt-0 modal-action ">
-                                <label htmlFor="modal-add-image" className="btn btn-ghost">
+                                <label htmlFor="modal-add-image" className="btn btn-ghost" id='btn-close'>
                                     Close
                                 </label>
                             </div>
-                            <button className="w-32 text-white btn btn-primary" onClick={handleUpload}>
+                            <button className="w-32 text-white btn btn-primary" id='btn-submit' onClick={handleUpload}>
                                 Submit
                             </button>
 
@@ -402,7 +403,10 @@ const DetailVenue = () => {
 
                             {user_id != idUser ?
                                 <div className='w-full p-2 mt-10'>
-                                    <button className='w-full h-12 font-semibold text-white bg-primary rounded-xl'>
+                                    <button className='w-full h-12 font-semibold text-white bg-primary rounded-xl'
+                                    id='btn-check-avail'
+                                    onClick={HanldeCheckAvail}
+                                    >
                                         Check Availability
                                     </button>
                                 </div>
@@ -438,7 +442,7 @@ const DetailVenue = () => {
                             <span className='text-3xl font-bold'>Review & Ratings</span>
                             <div className='flex items-center gap-4'>
                                 <div className='text-5xl font-bold'>
-                                    {Math.round(venue.average_rating * 10) / 10}
+                                    {Math.round(venue.average_rating * 10) / 10 || 0}
                                 </div>
                                 <div className='mt-3'>
                                     <div className='flex gap-2 text-2xl text-yellow'>

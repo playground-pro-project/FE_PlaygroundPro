@@ -179,10 +179,21 @@ const Api = {
         "Access-Control-Allow-Origin": true,
       },
     }),
+
   deleteImageProfile: (token: string | null) =>
     instance({
       method: "DELETE",
       url: `/users/profile-picture`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Access-Control-Allow-Origin": true,
+      },
+    }),
+
+  checkAvailability: (token: string | null, id_venue: string | null) =>
+    instance({
+      method: "GET",
+      url: `/venues/${id_venue}/availability`,
       headers: {
         Authorization: `Bearer ${token}`,
         "Access-Control-Allow-Origin": true,

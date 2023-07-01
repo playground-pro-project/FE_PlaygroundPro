@@ -31,8 +31,7 @@ const LocationComponent = () => {
       );
       const data = await response.json();
       setCity(data.city)
-      console.log(data)
-
+      
     } catch (error) {
       console.log(error);
     }
@@ -41,7 +40,7 @@ const LocationComponent = () => {
   return (
     <div>
       <span className='font-bold'>{city}</span> 
-      <span className='text-sm'>lat : {latitud} long : {longitud}</span>
+      {/* <span className='text-sm'>lat : {latitud} long : {longitud}</span> */}
     </div>
   );
 };

@@ -20,8 +20,6 @@ const LandingPage = () => {
                 const response = await Api.GetVenue(page, limit, Math.floor(longitud), Math.floor(latitud));
                 setVenue(response.data)
                
-
-
             } catch (error) {
                 console.error(error)
             }
@@ -35,12 +33,13 @@ const LandingPage = () => {
         if (venue.pagination.total_pages > page || venue.pagination.total_pages === undefined) {
             setPage((prevPage) => prevPage + 1);
         }
-        console.log(venue.pagination)
+       
     };
 
     const handlePrevPage = () => {
         setPage((prevPage) => (prevPage > 1 ? prevPage - 1 : 1));
     };
+   
 
 
     return (

@@ -108,3 +108,16 @@ export interface GetReview {
 export interface UploadImageVenue {
   messege: string;
 }
+
+export interface GetAvailability {
+  venue_id: string,
+  category: string,
+  name: string,
+  reservations: [
+    {
+      reservation_id: string,
+      check_in_date: any,
+      check_out_date: any
+    }
+  ]
+}
