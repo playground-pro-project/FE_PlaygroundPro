@@ -9,7 +9,17 @@ import LocationComponent from "./Geolocation";
 export const Navbar = () => {
   const navigate = useNavigate();
   const [Login, setLogin] = useState(true);
-  const { profile_picture, token, role, removeToken , removeIdUser, removePassword, removeIdVenue, removeEmail, removeRole, removePP} = useStore();
+  const {
+    profile_picture,
+    token,
+    role,
+    removeToken,
+    removeIdUser,
+    removePassword,
+    removeIdVenue,
+    removeEmail,
+    removeRole,
+  } = useStore();
 
   useEffect(() => {
     if (token && typeof token === "string") {
@@ -83,7 +93,10 @@ export const Navbar = () => {
                 <div className="w-10 rounded-full">
                   <img
                     id="avatar"
-                    src={profile_picture || "https://pwco.com.sg/wp-content/uploads/2020/05/Generic-Profile-Placeholder-v3.png"}
+                    src={
+                      profile_picture ||
+                      "https://pwco.com.sg/wp-content/uploads/2020/05/Generic-Profile-Placeholder-v3.png"
+                    }
                   />
                 </div>
               </label>
@@ -102,7 +115,7 @@ export const Navbar = () => {
                   </Link>
                 </li>
                 <li id="nav-user">
-                  {role === "user" ? (
+                  {role == "user" ? (
                     <Link to={"/validate"}>
                       <a>Become Owner</a>
                       <span className="badge badge-secondary">New</span>

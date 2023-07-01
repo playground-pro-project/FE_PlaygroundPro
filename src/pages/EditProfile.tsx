@@ -17,9 +17,6 @@ const schema = Yup.object().shape({
 });
 const schemaPassword = Yup.object().shape({
   new_password: Yup.string().required("Required"),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "password must match")
-    .required("Required"),
 });
 
 const EditProfile = () => {
@@ -163,7 +160,7 @@ const EditProfile = () => {
                   touch={formikPassword.touched.new_password}
                 />
               </div>
-
+              {/* 
               <div className="w-full">
                 <label htmlFor="confirmPassword" className="label">
                   <p className="label-text">Confirm Password: </p>
@@ -173,10 +170,8 @@ const EditProfile = () => {
                   name="confirmPassword"
                   label="type your confirm password here"
                   type="password"
-                  onChange={formikPassword.handleChange}
-                  onBlur={formikPassword.handleBlur}
                 />
-              </div>
+              </div> */}
 
               <div className="flex justify-center mr-4 mt-5">
                 <button
