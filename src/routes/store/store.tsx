@@ -181,6 +181,7 @@ const store = create<StoreState>((set: SetState<StoreState>) => ({
     }
     set({ profile_picture });
   },
+
   removePP: () => {
     localStorage.removeItem("profile_picture");
     set({ profile_picture: null });
@@ -194,6 +195,7 @@ const store = create<StoreState>((set: SetState<StoreState>) => ({
     }
     set({ full_name });
   },
+  
   removeFullname: () => {
     localStorage.removeItem("full_name");
     set({ full_name: null });
