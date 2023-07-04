@@ -173,7 +173,6 @@ const Profile = () => {
   useEffect(() => {
     fetchProfile();
   }, []);
-  useEffect(() => {}, []);
 
   return (
     <Layout chose="layout">

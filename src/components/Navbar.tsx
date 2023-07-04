@@ -5,10 +5,12 @@ import { useNavigate, Link } from "react-router-dom";
 import { useStore } from "../routes/store/store";
 import Swal from "sweetalert2";
 import LocationComponent from "./Geolocation";
+import Api from "../routes/Routes";
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const [Login, setLogin] = useState(true);
+  
   const {
     profile_picture,
     token,
@@ -20,13 +22,31 @@ export const Navbar = () => {
     removeEmail,
     removeRole,
     removePP,
+    setPP,
   } = useStore();
 
   useEffect(() => {
     if (token && typeof token === "string") {
       setLogin(false);
     }
-  }, []);
+    const fetchProfile = async () => {
+      
+      await Api.getProfile(token)
+        .then((response) => {
+          const { data } = response.data;
+       
+          setPP(data.profile_picture);
+        
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        
+    };
+    fetchProfile()
+
+    
+  }, [token]);
 
   const handleLogin = () => {
     navigate("/login");
@@ -51,7 +71,6 @@ export const Navbar = () => {
         removeEmail();
         removeRole();
         removePP();
-        Swal.fire("Log Out", "logout Success", "success");
         Swal.fire("Log Out", "logout Success", "success");
         navigate("/");
       }
