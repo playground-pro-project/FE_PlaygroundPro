@@ -53,8 +53,8 @@ const LandingPage = () => {
                     <div className="absolute inset-0 flex items-center justify-center w-full">
                         <div className='flex items-center justify-center w-1/2'>
                             <div>
-                                <div>
-                                    <h1 className="z-20 text-4xl font-bold text-white">"Effortlessly find and reserve the perfect sport venue."</h1>
+                                <div className='flex justify-center items-center mb-20'>
+                                    <h1 className="z-20 text-5xl font-bold text-white text-center">"Effortlessly find and reserve the perfect sport venue."</h1>
                                 </div>
                                 <div className='flex items-center justify-between w-full h-16 p-5 mt-5 bg-gray-100 rounded-xl grow'>
                                     <select className="bg-gray-100 select">
@@ -79,9 +79,6 @@ const LandingPage = () => {
                                         <option>2</option>
                                         <option>1</option>
                                     </select>
-                                    <div className="h-12 border border-gray-400"></div>
-                                    <p className='mr-10'>Price</p>
-
                                     <BsSearch />
 
                                 </div>

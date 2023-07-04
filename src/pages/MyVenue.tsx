@@ -72,12 +72,10 @@ const MyVenue = () => {
 
   const HandleAddVenue = async () => {
     HandleAdd();
-
   }
 
   const HandleAdd = async () => {
     const { name, description, price, category, service_time_open, service_time_close } = formik.values;
-    
     const time = `${service_time_open} - ${service_time_close}`
 
     const formData = new FormData();
@@ -105,7 +103,7 @@ const MyVenue = () => {
       Swal.fire({
         position: 'center',
         icon: 'success',
-        title: 'Upload Image Success',
+        title: 'Upload Venue Success',
         showConfirmButton: false,
         timer: 1800
       })
@@ -128,13 +126,11 @@ const MyVenue = () => {
 
   }
 
-
   const handleFileUpload = () => {
 
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
-
   };
 
   const handleSelectedFile = (event: ChangeEvent<HTMLInputElement>) => {
@@ -205,21 +201,19 @@ const MyVenue = () => {
                     defaultVal={'Category'}
                     onChangeSelect={formik.handleChange}
                   >
-                    <option value="football" id="football_option">
+                    <option value="football" id="football">
                       Sepak Bola
                     </option>
-                    <option value="voli" id="voli_option">
-                      Voli
-                    </option>
-                    <option value="futsal" id="futsal_option">
+                    <option value="futsal" id="futsal">
                       Futsal
                     </option>
-                    <option value="basketball" id="basketball_option">
+                    <option value="basketball" id="basketball">
                       Basket
                     </option>
-                    <option value="badminton" id="badminton_option">
-                      Basket
+                    <option value="badminton" id="basketball">
+                      Badminton
                     </option>
+
                   </Select>
                   <div className='w-full flex justify-between gap-2'>
                     <div>
@@ -271,7 +265,7 @@ const MyVenue = () => {
               </div>
               <div className='w-full mt-5'>
                 <label htmlFor="marker" className='mb-5'>Location : <span className='font-bold'>{city}</span></label>
-                <br/><label >lat : {lat} long : {long}</label>
+                <br /><label >lat : {lat} long : {long}</label>
                 <Markers onMarkerClick={handleMarkerClick} />
               </div>
 

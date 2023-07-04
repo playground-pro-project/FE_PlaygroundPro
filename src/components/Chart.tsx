@@ -37,6 +37,11 @@ const ChartSide = () => {
           },
         ],
       },
+      options: {
+        animation: {
+          duration: 0, 
+        },
+      },
 
     };
 
@@ -54,7 +59,6 @@ const ChartSide = () => {
     <>
     <div className='w-full' >
       <canvas  id="acquisitions"  ></canvas>
-
     </div>
     </>
   );
