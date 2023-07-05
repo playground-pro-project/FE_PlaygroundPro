@@ -18,7 +18,7 @@ const schema = Yup.object({
 });
 
 const OtpPage = () => {
-    const [progress, setProgress] = useState(30);
+    const [progress, setProgress] = useState(10);
     const [loading, setLoading] = useState<boolean>(false)
     const { email, idUser, password } = useStore();
     const { setToken, setIdUser, setEmail, setRole } = useStore();
